@@ -1,4 +1,5 @@
-var BALL_RADIUS = 5.715 / 2;
+var BALL_RADIUS = 5.715 / 2; // cm
+var BALL_MASS = 50; // kg
 
 function Ball(x,y,z,color) {
 	this.speed_x = 0;
@@ -6,11 +7,37 @@ function Ball(x,y,z,color) {
 	this.color = color;
 	this.mesh = this.createMesh(x,y,z);
 	scene.add(this.mesh);
+	this.rigidBody = this.createBody(x,y,z);
+	world.addBody(this.rigidBody);
+	
+}
+
+Ball.prototype.hitForce = function(forceX, forceY,forceZ){
+	// Add an force to the top center
+	var ballPoint = new CANNON.Vec3();
+	ballPoint.copy(this.rigidBody.position);
+	ballPoint.y += BALL_RADIUS;
+	
+    var force = new CANNON.Vec3(forceX,forceY,forceZ);
+    force.scale(500,force);
+    this.rigidBody.applyImpulse(force, ballPoint);
+
+}
+
+Ball.prototype.createBody = function(x,y,z){
+	var sphereBody = new CANNON.Body({
+	   mass: BALL_MASS, // kg
+	   position: new CANNON.Vec3(x,y,z), // m
+	   shape: new CANNON.Sphere(BALL_RADIUS)
+	});
+	sphereBody.linearDamping = sphereBody.angularDamping = 0.5; // Hardcode
+	
+	return sphereBody;
 }
 
 Ball.prototype.createMesh = function(x,y,z) {
 
-	var geometry = new THREE.SphereGeometry( BALL_RADIUS, 32, 32 );
+	var geometry = new THREE.SphereGeometry( BALL_RADIUS, 10, 10 );
 	// modify UVs to accommodate MatCap texture, see http://stackoverflow.com/questions/21663923/mapping-image-onto-a-sphere-in-three-js
 	var faceVertexUvs = geometry.faceVertexUvs[ 0 ];
 	for ( i = 0; i < faceVertexUvs.length; i ++ ) {
@@ -39,30 +66,6 @@ Ball.prototype.createMesh = function(x,y,z) {
 }
 
 Ball.prototype.tick = function(dt) {
-	
-	var x_dir = Math.sign(this.speed_x);
-	var z_dir = Math.sign(this.speed_z);
-
-
-	// Check for borders of the table:
-	if (Math.abs(this.mesh.position.x) >= TABLE_LEN_X/2.0 - BALL_RADIUS ){
-		this.speed_x *= -1;
-	} 
-	this.mesh.position.x += dt * this.speed_x;
-
-  	if (Math.abs(this.mesh.position.z) >= TABLE_LEN_Y/2.0 - BALL_RADIUS ){
-		this.speed_z *= -1;	
-  	} 
-
-  	// Update ball position:
-  	this.mesh.position.z += dt * this.speed_z;
-
-  	//Update ball rotation:
-  	this.mesh.rotateOnAxis(new THREE.Vector3(1,0,0),  this.speed_z/200.0 * (Math.PI));
-  	this.mesh.rotateOnAxis(new THREE.Vector3(0,0,1), -this.speed_x/200.0 * (Math.PI));
-
-  	//diminish speed
-  	this.speed_x -= (Math.abs(this.speed_x) > 0) ?  x_dir*(Math.pow(2, 0.015*x_dir* this.speed_x) -1) : this.speed_x;
-  	this.speed_z -= (Math.abs(this.speed_z) > 0) ?  z_dir*(Math.pow(2, 0.015*z_dir* this.speed_z) -1) : this.speed_z;
-  
+  	this.mesh.position.copy(this.rigidBody.position);
+  	this.mesh.quaternion.copy(this.rigidBody.quaternion);
 }

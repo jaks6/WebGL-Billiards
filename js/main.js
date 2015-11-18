@@ -2,9 +2,12 @@ var WIDTH	= 800,
 	HEIGHT	= 600;
 
 //globals
-var renderer, scene, camera, game, controls, keyboard, lightsConfig;
+var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
 
 var light1, light2;
+
+var fixedTimeStep = 1.0 / 60.0; // seconds
+var maxSubSteps = 6;
 
 // set some camera attributes
 var VIEW_ANGLE = 45,
@@ -17,6 +20,7 @@ var clock = new THREE.Clock();
 
 function onLoad() { 
 	var canvasContainer = document.getElementById('canvas'); 
+	var btn_ball = document.getElementById('btn_ball'); 
 
 	// create a WebGL renderer, camera
 	// and a scene
@@ -65,6 +69,12 @@ function onLoad() {
 	keyboard = new THREEx.KeyboardState();
 
 
+
+	// Setup our cannon.js world for physics
+	world = new CANNON.World();
+	world.gravity.set(0, 30 * -9.82, 0); // m/s²
+	
+
 	game = new Game();
 	addLights();
 	
@@ -72,6 +82,8 @@ function onLoad() {
 	renderer.render(scene, camera);
 
 	lightsConfig = new LightsConfig();
+
+	btn_ball.onclick = function() {game.randomBallHit(); };
 	// var gui = new dat.GUI();
 	    
 	// gui.add(lightsConfig, 'anglePiDivisor',3,10);
@@ -84,11 +96,12 @@ function onLoad() {
 }
 
 function draw() {
-	var dt = clock.getDelta();
-	
+	var dt = clock.getDelta();	
 	var time = clock.getElapsedTime(); //Take the time
+
 	requestAnimationFrame(draw);
 	controls.update();
+	world.step(fixedTimeStep);
 	game.tick(dt);
 	
 	
