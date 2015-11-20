@@ -55,7 +55,7 @@ Ball.prototype.getMaterial = function(){
 
 Ball.prototype.createMesh = function(x,y,z,color) {
 
-	var geometry = new THREE.SphereGeometry( BALL_RADIUS, 6, 6 );
+	var geometry = new THREE.SphereGeometry( BALL_RADIUS, 16, 16 );
 	var material = new THREE.MeshPhongMaterial( {
 		color: color, 
 		specular: 0xffffff, 
@@ -66,6 +66,9 @@ Ball.prototype.createMesh = function(x,y,z,color) {
 
 
 	sphere.position.set(x,y,z);
+
+	sphere.castShadow = true;
+	sphere.receiveShadow = true;
 
 	return sphere;
 

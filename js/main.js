@@ -46,6 +46,8 @@ function onLoad() {
     // create renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(WIDTH, HEIGHT);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapSoft = true;
 
     // attach the render-supplied DOM element
     canvasContainer.appendChild(renderer.domElement);
@@ -88,9 +90,10 @@ function onLoad() {
     
     //make the background void a grey color instead of black.  
     renderer.setClearColor(0x262626, 1);
-    renderer.render(scene, camera);
+    
 
-    lightsConfig = new getLightsConfig();
+    //lightsConfig = new getLightsConfig();
+    renderer.render(scene, camera);
 
     
     // var gui = new dat.GUI();
@@ -108,7 +111,7 @@ function createPhysicsWorld(){
     w = new CANNON.World()
     w.gravity.set(0, 30 * -9.82, 0); // m/s²
 
-    w.solver.iterations = 50;
+    w.solver.iterations = 20;
     w.solver.tolerance = 0;   // Force solver to use all iterations
 
     return w;
@@ -182,18 +185,36 @@ var getLightsConfig = function(){
 
 /** Adds an ambient light and two spotlights above the table */
 function addLights() {
-    var light = new THREE.AmbientLight( 0x303030 ); // soft white ambient light
-    scene.add( light );
+    //var light = new THREE.AmbientLight( 0x303030 ); // soft white ambient light
+    //scene.add( light );
 
-    light1 = new THREE.SpotLight(0xffffe5);
-    light1.position.set(TABLE_LEN_X / 4, 90, 0);
+    light1 = new THREE.SpotLight(0xffffe5, 1);
+    light1.position.set(TABLE_LEN_X / 4, 110, 0);
     light1.target.position.set(TABLE_LEN_X / 4, 0, 0);
     light1.target.updateMatrixWorld();
 
+
+    light1.castShadow = true;
+    light1.shadowCameraFov = 65;
+    light1.shadowCameraFar = 115;
+
+
+    
+
     light2 = new THREE.SpotLight(0xffffe5);
-    light2.position.set(-TABLE_LEN_X / 4, 90, 0);
+    light2.position.set(-TABLE_LEN_X / 4, 110, 0);
     light2.target.position.set(-TABLE_LEN_X / 4, 0, 0);
     light2.target.updateMatrixWorld();
+
+    light2.castShadow = true;
+    light2.shadowCameraFov = 65;
+    light2.shadowCameraFar = 115;
+
+    //for debugging
+    // var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
+    // scene.add(shadowCam1);
+    // var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
+    // scene.add(shadowCam2);
 
     scene.add(light1);
     scene.add(light2);

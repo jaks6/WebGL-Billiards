@@ -8,8 +8,10 @@ var TABLE_LEN_X = 270;
 var TABLE_WALL_HEIGHT = 6;
 
 var Table = function() {
-    this.mesh = this.createMesh();
-    scene.add(this.mesh);
+    this.createFloor();
+    this.createWalls();
+    
+
     this.rigidBody = this.createBody(); //floor
 
     this.walls = this.createWalls(); 
@@ -23,8 +25,8 @@ Table.prototype.getFloorMaterial = function(){
     return this.rigidBody.material;
 };
 
-/**Creates cannon js walls*/
-Table.prototype.createWalls = function(){
+/** Creates cannon js walls*/
+Table.prototype.createWallBodies = function(){
     var walls = [
     // wall with normal of -z
     createRotatedTableSidePlane(
@@ -90,16 +92,41 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
     return wallBody;
 
 };
-
-
-Table.prototype.createMesh = function() {
+Table.prototype.createWalls = function() {
     var halfPi = Math.PI / 2;
-    var mesh = new THREE.Mesh();
-
-
     var geometry = new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_LEN_Z);
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
+    var material = new THREE.MeshPhongMaterial( {
+            color: new THREE.Color(TABLE_COLORS.cloth),
+            specular: 0x404040,
+            shininess: 20,
+            shading: THREE.SmoothShading
+        } );
+
+    var leftWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
+    leftWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, -TABLE_LEN_Z / 2.0);
+    scene.add(leftWall);
+
+    var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
+    rightWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, TABLE_LEN_Z / 2.0);
+    scene.add(rightWall);
+    
+
+    var topWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
+    topWall.position.set(-TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
+    topWall.rotation.set(0, halfPi, 0);
+    scene.add(topWall);
+
+    var bottomWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
+    bottomWall.position.set(TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
+    bottomWall.rotation.set(0, -halfPi, 0);
+    scene.add(bottomWall);
+
+    //create physics bodies:
+    this.walls = this.createWallBodies();
+}
+
+Table.prototype.createFloor = function() {
+    var geometry = new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_LEN_Z);
 
     var material = new THREE.MeshPhongMaterial( {
             color: new THREE.Color(TABLE_COLORS.cloth),
@@ -107,33 +134,10 @@ Table.prototype.createMesh = function() {
             shininess: 20,
             shading: THREE.SmoothShading
         } );
+
+
     var floor = new THREE.Mesh(geometry, material);
-
-    var leftWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
-    var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
-
-    var topWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
-    var bottomWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
-
-    floor.rotation.set(-halfPi, 0, 0);
-
-    topWall.rotation.set(0, halfPi, 0);
-    bottomWall.rotation.set(0, -halfPi, 0);
-
-    leftWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, -TABLE_LEN_Z / 2.0);
-    rightWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, TABLE_LEN_Z / 2.0);
-
-    topWall.position.set(-TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
-    bottomWall.position.set(TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
-
-
-    mesh.add(floor);
-
-    mesh.add(leftWall);
-    mesh.add(rightWall);
-
-    mesh.add(topWall);
-    mesh.add(bottomWall);
-
-    return mesh;
+    floor.receiveShadow = true;
+    floor.rotation.set(-Math.PI / 2, 0, 0);
+    scene.add(floor);  
 }
