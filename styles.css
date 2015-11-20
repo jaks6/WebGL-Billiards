@@ -8,7 +8,7 @@
     width: 960px;
 }
 
-#control-buttons {
+.control-button {
 	margin: 1% auto;
 	text-align: center;
 }
