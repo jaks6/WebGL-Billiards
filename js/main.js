@@ -1,4 +1,4 @@
-var WIDTH   = 800,
+var WIDTH   = 960,
     HEIGHT  = 480;
 
 //globals
@@ -49,13 +49,6 @@ function onLoad() {
     canvasContainer.appendChild(renderer.domElement);
 
 
-    //MOUSE controls
-    //controls = new THREE.TrackballControls( camera );
-    controls = new THREE.OrbitControls(camera,renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.5;
-    controls.enableZoom = true;
-    controls.noPan = true;
 
 
 
@@ -71,8 +64,13 @@ function onLoad() {
     // Configure lighting:
     addLights();
 
-    // the camera starts at 0,0,0, move it a little
-    //camera.position.z = 0;
+    //MOUSE controls
+    controls = new THREE.OrbitControls(camera,renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.5;
+    controls.enableZoom = true;
+    controls.enablePan = true;
+
     camera.position.set(-170,70,0);
     //camera.position.y = 80;
 
@@ -116,10 +114,7 @@ function createPhysicsWorld(){
     some other place. For example, perhaps each ball object should define it's contactmaterial
     with the walls itself?*/
 function configureMaterials(){
-    //!TODO Set some appropriate defaultContactMaterial configuration aswell.
 
-    //world.defaultContactMaterial.contactEquationStiffness = 1e20; // Contact stiffness - use to make softer/harder contacts
-    //world.defaultContactMaterial.contactEquationRelaxation = 4;
     world.defaultContactMaterial.friction = 0.1;
     world.defaultContactMaterial.restitution = 0.85;
     
@@ -142,11 +137,9 @@ function draw() {
     var dt = clock.getDelta();  
 
     requestAnimationFrame(draw);
-    controls.target = (game.balls[0].mesh.position);
-    controls.update();
     
-   // camera.position.x = game.balls[0].rigidBody.position.x-100;
-   // camera.position.z = game.balls[0].rigidBody.position.z;
+    controls.target.copy(game.balls[0].mesh.position );
+    controls.update();
     world.step(fixedTimeStep);
     game.tick(dt);
     

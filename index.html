@@ -2,10 +2,14 @@
 <html>
 	<head>
 		<title>Billiard</title>
+
+		<link rel="stylesheet" href="styles.css">
+		<!-- BootStrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
 		<script type="text/javascript" src="lib/three.js/build/three.min.js"></script>
 		<script type="text/javascript" src="lib/cannon.min.js"></script>
 		<script type="text/javascript" src="lib/OrbitControls.js"></script>
-		<script type="text/javascript" src="lib/TrackballControls.js"></script>
 		<script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
 		<script type="text/javascript" src="lib/dat.gui.js"></script>
 		<script type="text/javascript" src="js/Ball.js"></script>
@@ -17,12 +21,14 @@
 
 	<body onload="onLoad()">
 
-		<div id="canvas">s</div>
-		<button id="btn_ball" type="button">Force</button>
-		<div id="stat">debug:</div>
+		<div id="canvas"></div>
+		<div id="control-buttons">
+			<button id=btn_ball type="button" class="btn btn-success">Hit</button>
+		</div>
+		<div class="jumbotron guide">
+		    <p>Use the mouse to look around, click on the button to make the white ball move.</p>
+		</div>
 		<div id="status"></div>
-
-
 		
 	</body>
 </html>
