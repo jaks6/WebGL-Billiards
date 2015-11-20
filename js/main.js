@@ -37,11 +37,7 @@ function onLoad() {
     scene = new THREE.Scene();
     scene.add(camera);
 
-    // the camera starts at 0,0,0, move it a little
-    camera.position.z = 0;
-    camera.position.y = 100;
 
-    camera.lookAt(new THREE.Vector3(0));
 
     // create renderer
     renderer = new THREE.WebGLRenderer();
@@ -54,19 +50,12 @@ function onLoad() {
 
 
     //MOUSE controls
-    controls = new THREE.TrackballControls( camera );
-    controls.rotateSpeed = 5.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 2.8;
-
-    controls.noZoom = false;
-    controls.noPan = false;
-
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.3;
-
-    controls.keys = [ 65, 83, 68 ];
-    controls.target.set(0, 0, 0 );
+    //controls = new THREE.TrackballControls( camera );
+    controls = new THREE.OrbitControls(camera,renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.5;
+    controls.enableZoom = true;
+    controls.noPan = true;
 
 
 
@@ -82,11 +71,14 @@ function onLoad() {
     // Configure lighting:
     addLights();
 
-    //debug ball overview camera
-    camera.position.x = game.balls[0].mesh.position.x - 20;
-    camera.lookAt(game.balls[0].mesh.position);
-    controls.target = (game.balls[0].mesh.position);
-    camera.position.y = 140;
+    // the camera starts at 0,0,0, move it a little
+    //camera.position.z = 0;
+    camera.position.set(-170,70,0);
+    //camera.position.y = 80;
+
+    //camera.lookAt(new THREE.Vector3(0));
+    
+
     
     //make the background void a grey color instead of black.  
     renderer.setClearColor(0x262626, 1);
@@ -150,7 +142,11 @@ function draw() {
     var dt = clock.getDelta();  
 
     requestAnimationFrame(draw);
+    controls.target = (game.balls[0].mesh.position);
     controls.update();
+    
+   // camera.position.x = game.balls[0].rigidBody.position.x-100;
+   // camera.position.z = game.balls[0].rigidBody.position.z;
     world.step(fixedTimeStep);
     game.tick(dt);
     
