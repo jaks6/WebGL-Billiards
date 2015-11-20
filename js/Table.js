@@ -1,13 +1,13 @@
-var TABLE_COLORS = {
+Table.COLORS = {
 	cloth : "#4d9900"
 }
 
-var TABLE_LEN_Z = 140;
-var TABLE_LEN_X = 270;
+Table.LEN_Z = 140;
+Table.LEN_X = 270;
 
-var TABLE_WALL_HEIGHT = 6;
+Table.WALL_HEIGHT = 6;
 
-var Table = function() {
+function Table() {
     this.createFloor();
     this.createWalls();
     
@@ -30,28 +30,28 @@ Table.prototype.createWallBodies = function(){
     var walls = [
     // wall with normal of -z
     createRotatedTableSidePlane(
-        new CANNON.Vec3(0, 0, TABLE_LEN_Z / 2),
+        new CANNON.Vec3(0, 0, Table.LEN_Z / 2),
         new CANNON.Quaternion(0, 1, 0),
         Math.PI
         ),
 
     // wall with normal of +z
     createRotatedTableSidePlane(
-        new CANNON.Vec3(0, 0, -TABLE_LEN_Z / 2),
+        new CANNON.Vec3(0, 0, -Table.LEN_Z / 2),
         new CANNON.Quaternion(0, 1, 0),
         0
         ),
 
     // wall with normal of -x
     createRotatedTableSidePlane(
-        new CANNON.Vec3(TABLE_LEN_X / 2, 0, 0),
+        new CANNON.Vec3(Table.LEN_X / 2, 0, 0),
         new CANNON.Quaternion(0, 1, 0),
         -Math.PI / 2
         ),
 
     // wall with normal of +x
     createRotatedTableSidePlane(
-        new CANNON.Vec3(-TABLE_LEN_X / 2, 0, 0),
+        new CANNON.Vec3(-Table.LEN_X / 2, 0, 0),
         new CANNON.Quaternion(0, 1, 0),
         Math.PI / 2
         )
@@ -61,7 +61,6 @@ Table.prototype.createWallBodies = function(){
 
 
 Table.prototype.createBody = function(){
-    //var groundMaterial = new CANNON.Material("groundMaterial");
     var groundBody = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
         material: Table.floorContactMaterial
@@ -94,30 +93,30 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
 };
 Table.prototype.createWalls = function() {
     var halfPi = Math.PI / 2;
-    var geometry = new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_LEN_Z);
+    var geometry = new THREE.PlaneGeometry(Table.LEN_X, Table.LEN_Z);
     var material = new THREE.MeshPhongMaterial( {
-            color: new THREE.Color(TABLE_COLORS.cloth),
+            color: new THREE.Color(Table.COLORS.cloth),
             specular: 0x404040,
             shininess: 20,
             shading: THREE.SmoothShading
         } );
 
-    var leftWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
-    leftWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, -TABLE_LEN_Z / 2.0);
+    var leftWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_X, Table.WALL_HEIGHT), material);
+    leftWall.position.set(0, Table.WALL_HEIGHT / 2.0, -Table.LEN_Z / 2.0);
     scene.add(leftWall);
 
-    var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
-    rightWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, TABLE_LEN_Z / 2.0);
+    var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_X, Table.WALL_HEIGHT), material);
+    rightWall.position.set(0, Table.WALL_HEIGHT / 2.0, Table.LEN_Z / 2.0);
     scene.add(rightWall);
     
 
-    var topWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
-    topWall.position.set(-TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
+    var topWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_Z, Table.WALL_HEIGHT), material);
+    topWall.position.set(-Table.LEN_X / 2.0, Table.WALL_HEIGHT / 2.0, 0);
     topWall.rotation.set(0, halfPi, 0);
     scene.add(topWall);
 
-    var bottomWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
-    bottomWall.position.set(TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
+    var bottomWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_Z, Table.WALL_HEIGHT), material);
+    bottomWall.position.set(Table.LEN_X / 2.0, Table.WALL_HEIGHT / 2.0, 0);
     bottomWall.rotation.set(0, -halfPi, 0);
     scene.add(bottomWall);
 
@@ -126,10 +125,10 @@ Table.prototype.createWalls = function() {
 }
 
 Table.prototype.createFloor = function() {
-    var geometry = new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_LEN_Z);
+    var geometry = new THREE.PlaneGeometry(Table.LEN_X, Table.LEN_Z);
 
     var material = new THREE.MeshPhongMaterial( {
-            color: new THREE.Color(TABLE_COLORS.cloth),
+            color: new THREE.Color(Table.COLORS.cloth),
             specular: 0x404040,
             shininess: 20,
             shading: THREE.SmoothShading

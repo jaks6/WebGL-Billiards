@@ -15,7 +15,7 @@ var fixedTimeStep = 1.0 / 60.0; // seconds
 var VIEW_ANGLE = 45,
   ASPECT = WIDTH / HEIGHT,
   NEAR = 1,
-  FAR = 10000;
+  FAR = 1000;
 
 //We use the clock to measure time, an extension for the keyboard
 var clock = new THREE.Clock();      
@@ -178,8 +178,8 @@ function addLights() {
     //scene.add( light );
 
     light1 = new THREE.SpotLight(0xffffe5, 1);
-    light1.position.set(TABLE_LEN_X / 4, 110, 0);
-    light1.target.position.set(TABLE_LEN_X / 4, 0, 0);
+    light1.position.set(Table.LEN_X / 4, 110, 0);
+    light1.target.position.set(Table.LEN_X / 4, 0, 0);
     light1.target.updateMatrixWorld();
 
 
@@ -191,8 +191,8 @@ function addLights() {
     
 
     light2 = new THREE.SpotLight(0xffffe5);
-    light2.position.set(-TABLE_LEN_X / 4, 110, 0);
-    light2.target.position.set(-TABLE_LEN_X / 4, 0, 0);
+    light2.position.set(-Table.LEN_X / 4, 110, 0);
+    light2.target.position.set(-Table.LEN_X / 4, 0, 0);
     light2.target.updateMatrixWorld();
 
     light2.castShadow = true;
@@ -207,17 +207,4 @@ function addLights() {
 
     scene.add(light1);
     scene.add(light2);
-
-
-    //Add some simple boxes to depict the light source positions.
-    // var geometry = new THREE.BoxGeometry( 20, 10, 20);
-    // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    // var cube1 = new THREE.Mesh( geometry, material );
-    // var cube2 = new THREE.Mesh( geometry, material );
-
-    // cube1.position.set(TABLE_LEN_X / 4, 90, 0);
-    // cube2.position.set(-TABLE_LEN_X / 4, 90, 0);
-    // scene.add(cube1);
-    // scene.add(cube2);
-
 }
