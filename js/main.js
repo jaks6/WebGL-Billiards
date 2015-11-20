@@ -37,34 +37,25 @@ function onLoad() {
     scene = new THREE.Scene();
     scene.add(camera);
 
-    // the camera starts at 0,0,0, move it a little
-    camera.position.z = 0;
-    camera.position.y = 100;
 
-    camera.lookAt(new THREE.Vector3(0));
 
     // create renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(WIDTH, HEIGHT);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapSoft = true;
 
     // attach the render-supplied DOM element
     canvasContainer.appendChild(renderer.domElement);
 
 
     //MOUSE controls
-    controls = new THREE.TrackballControls( camera );
-    controls.rotateSpeed = 5.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 2.8;
-
-    controls.noZoom = false;
-    controls.noPan = false;
-
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.3;
-
-    controls.keys = [ 65, 83, 68 ];
-    controls.target.set(0, 0, 0 );
+    //controls = new THREE.TrackballControls( camera );
+    controls = new THREE.OrbitControls(camera,renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.5;
+    controls.enableZoom = true;
+    controls.noPan = true;
 
 
 
@@ -80,17 +71,21 @@ function onLoad() {
     // Configure lighting:
     addLights();
 
-    //debug ball overview camera
-    camera.position.x = game.balls[0].mesh.position.x - 20;
-    camera.lookAt(game.balls[0].mesh.position);
-    controls.target = (game.balls[0].mesh.position);
-    camera.position.y = 140;
+    // the camera starts at 0,0,0, move it a little
+    //camera.position.z = 0;
+    camera.position.set(-170,70,0);
+    //camera.position.y = 80;
+
+    //camera.lookAt(new THREE.Vector3(0));
+    
+
     
     //make the background void a grey color instead of black.  
     renderer.setClearColor(0x262626, 1);
-    renderer.render(scene, camera);
+    
 
-    lightsConfig = new getLightsConfig();
+    //lightsConfig = new getLightsConfig();
+    renderer.render(scene, camera);
 
     
     // var gui = new dat.GUI();
@@ -108,7 +103,7 @@ function createPhysicsWorld(){
     w = new CANNON.World()
     w.gravity.set(0, 30 * -9.82, 0); // m/s²
 
-    w.solver.iterations = 50;
+    w.solver.iterations = 20;
     w.solver.tolerance = 0;   // Force solver to use all iterations
 
     return w;
@@ -147,7 +142,11 @@ function draw() {
     var dt = clock.getDelta();  
 
     requestAnimationFrame(draw);
+    controls.target = (game.balls[0].mesh.position);
     controls.update();
+    
+   // camera.position.x = game.balls[0].rigidBody.position.x-100;
+   // camera.position.z = game.balls[0].rigidBody.position.z;
     world.step(fixedTimeStep);
     game.tick(dt);
     
@@ -182,18 +181,36 @@ var getLightsConfig = function(){
 
 /** Adds an ambient light and two spotlights above the table */
 function addLights() {
-    var light = new THREE.AmbientLight( 0x303030 ); // soft white ambient light
-    scene.add( light );
+    //var light = new THREE.AmbientLight( 0x303030 ); // soft white ambient light
+    //scene.add( light );
 
-    light1 = new THREE.SpotLight(0xffffe5);
-    light1.position.set(TABLE_LEN_X / 4, 90, 0);
+    light1 = new THREE.SpotLight(0xffffe5, 1);
+    light1.position.set(TABLE_LEN_X / 4, 110, 0);
     light1.target.position.set(TABLE_LEN_X / 4, 0, 0);
     light1.target.updateMatrixWorld();
 
+
+    light1.castShadow = true;
+    light1.shadowCameraFov = 65;
+    light1.shadowCameraFar = 115;
+
+
+    
+
     light2 = new THREE.SpotLight(0xffffe5);
-    light2.position.set(-TABLE_LEN_X / 4, 90, 0);
+    light2.position.set(-TABLE_LEN_X / 4, 110, 0);
     light2.target.position.set(-TABLE_LEN_X / 4, 0, 0);
     light2.target.updateMatrixWorld();
+
+    light2.castShadow = true;
+    light2.shadowCameraFov = 65;
+    light2.shadowCameraFar = 115;
+
+    //for debugging
+    // var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
+    // scene.add(shadowCam1);
+    // var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
+    // scene.add(shadowCam2);
 
     scene.add(light1);
     scene.add(light2);
