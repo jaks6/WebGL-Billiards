@@ -6,36 +6,36 @@ function Game() {
   var X_offset = TABLE_LEN_X / 4;
   var X_offset_2 = 1.72; // this controls how tightly the balls are packed together on the x-axis
 
-  this.balls = 
+  this.balls =
     [new Ball( -TABLE_LEN_X / 4, BALL_RADIUS, 0, 0xffffff),
 
     // First row
-	new Ball(X_offset, BALL_RADIUS, 4 * BALL_RADIUS),
+    new Ball(X_offset, BALL_RADIUS, 4 * BALL_RADIUS),
     new Ball(X_offset, BALL_RADIUS, 2 * BALL_RADIUS),
     new Ball(X_offset, BALL_RADIUS, 0),
     new Ball(X_offset, BALL_RADIUS, -2 * BALL_RADIUS),
     new Ball(X_offset, BALL_RADIUS, -4 * BALL_RADIUS),
 
     // 2nd row
-    new Ball(X_offset + X_offset_2 * BALL_RADIUS, BALL_RADIUS, 3 * BALL_RADIUS),
-    new Ball(X_offset + X_offset_2 * BALL_RADIUS, BALL_RADIUS, BALL_RADIUS),
-    new Ball(X_offset + X_offset_2 * BALL_RADIUS, BALL_RADIUS, -1 * BALL_RADIUS),
-    new Ball(X_offset + X_offset_2 * BALL_RADIUS, BALL_RADIUS, -3 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * BALL_RADIUS, BALL_RADIUS, 3 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * BALL_RADIUS, BALL_RADIUS, BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * BALL_RADIUS, BALL_RADIUS, -1 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * BALL_RADIUS, BALL_RADIUS, -3 * BALL_RADIUS),
 
     // 3rd row
-    new Ball(X_offset + X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, 2 * BALL_RADIUS),
-    new Ball(X_offset + X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, 0),
-    new Ball(X_offset + X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, -2 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, 2 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, 0),
+    new Ball(X_offset - X_offset_2 * 2 * BALL_RADIUS, BALL_RADIUS, -2 * BALL_RADIUS),
 
     //4th row
-    new Ball(X_offset + X_offset_2 * 3 * BALL_RADIUS, BALL_RADIUS, BALL_RADIUS),
-    new Ball(X_offset + X_offset_2 * 3 * BALL_RADIUS, BALL_RADIUS, -1 * BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * 3 * BALL_RADIUS, BALL_RADIUS, BALL_RADIUS),
+    new Ball(X_offset - X_offset_2 * 3 * BALL_RADIUS, BALL_RADIUS, -1 * BALL_RADIUS),
 
     //5th row
-	new Ball(X_offset + X_offset_2 * 4  * BALL_RADIUS, BALL_RADIUS, 0)
+    new Ball(X_offset - X_offset_2 * 4  * BALL_RADIUS, BALL_RADIUS, 0)
     ];
 
-};
+}
 
 Game.prototype.tick = function(dt) {
   for (var i in this.balls){

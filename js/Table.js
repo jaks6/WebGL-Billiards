@@ -2,20 +2,34 @@ var TABLE_COLORS = {
 	cloth : "#4d9900"
 }
 
-var TABLE_LEN_Z = 140;
-var TABLE_LEN_X = 270;
+var TABLE_LEN_Z = 116;
+var TABLE_LEN_X = 264;
 
 var TABLE_WALL_HEIGHT = 6;
 
 var Table = function() {
-    this.createFloor();
-    this.createWalls();
-    
+		var loader = new THREE.JSONLoader();
+		loader.load( 'json/table.json', function ( geometry ) {
+				var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
+						color: new THREE.Color(TABLE_COLORS.cloth),
+						specular: 0x404040,
+						shininess: 20,
+						shading: THREE.SmoothShading
+				}));
 
-    this.rigidBody = this.createBody(); //floor
+				mesh.position.x = -137;
+				mesh.position.y = 0;
+				mesh.position.z = 63.5;
+				mesh.scale.set(100, 100, 100);
+				scene.add(mesh);
+		});
 
-    this.walls = this.createWalls(); 
-    
+		//this.createFloor();
+	  //this.createWalls();
+
+		this.rigidBody = this.createBody(); //floor
+
+		this.walls = this.createWallBodies();
 };
 
 Table.floorContactMaterial = new CANNON.Material("floorMaterial");
@@ -109,7 +123,7 @@ Table.prototype.createWalls = function() {
     var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_X, TABLE_WALL_HEIGHT), material);
     rightWall.position.set(0, TABLE_WALL_HEIGHT / 2.0, TABLE_LEN_Z / 2.0);
     scene.add(rightWall);
-    
+
 
     var topWall = new THREE.Mesh(new THREE.PlaneGeometry(TABLE_LEN_Z, TABLE_WALL_HEIGHT), material);
     topWall.position.set(-TABLE_LEN_X / 2.0, TABLE_WALL_HEIGHT / 2.0, 0);
@@ -122,7 +136,7 @@ Table.prototype.createWalls = function() {
     scene.add(bottomWall);
 
     //create physics bodies:
-    this.walls = this.createWallBodies();
+    //this.walls = this.createWallBodies();
 }
 
 Table.prototype.createFloor = function() {
@@ -139,5 +153,5 @@ Table.prototype.createFloor = function() {
     var floor = new THREE.Mesh(geometry, material);
     floor.receiveShadow = true;
     floor.rotation.set(-Math.PI / 2, 0, 0);
-    scene.add(floor);  
+    scene.add(floor);
 }
