@@ -1,5 +1,5 @@
 var TABLE_COLORS = {
-	cloth : "#4d9900"
+    cloth : "#4d9900"
 }
 
 var TABLE_LEN_Z = 116;
@@ -8,28 +8,28 @@ var TABLE_LEN_X = 264;
 var TABLE_WALL_HEIGHT = 6;
 
 var Table = function() {
-		var loader = new THREE.JSONLoader();
-		loader.load( 'json/table.json', function ( geometry ) {
-				var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
-						color: new THREE.Color(TABLE_COLORS.cloth),
-						specular: 0x404040,
-						shininess: 20,
-						shading: THREE.SmoothShading
-				}));
+    var loader = new THREE.JSONLoader();
+    loader.load( 'json/table.json', function ( geometry ) {
+    var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                    color: new THREE.Color(TABLE_COLORS.cloth),
+                    specular: 0x404040,
+                    shininess: 20,
+                    shading: THREE.SmoothShading
+            }));
 
-				mesh.position.x = -137;
-				mesh.position.y = 0;
-				mesh.position.z = 63.5;
-				mesh.scale.set(100, 100, 100);
-				scene.add(mesh);
-		});
+        mesh.position.x =-137;
+        mesh.position.y =0;
+        mesh.position.z =63.5;
+        mesh.scale.set( 100, 100, 100 );
+        scene.add( mesh );
+    });
 
-		//this.createFloor();
-	  //this.createWalls();
+  //  this.createFloor();
+   //this.createWalls();
 
-		this.rigidBody = this.createBody(); //floor
+    this.rigidBody = this.createBody(); //floor
 
-		this.walls = this.createWallBodies();
+    this.walls = this.createWallBodies();
 };
 
 Table.floorContactMaterial = new CANNON.Material("floorMaterial");
