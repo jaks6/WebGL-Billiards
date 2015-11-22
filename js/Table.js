@@ -1,23 +1,33 @@
-Table.COLORS = {
-	cloth : "#4d9900"
-}
+var Table = function() {
+    var loader = new THREE.JSONLoader();
+    loader.load( 'json/table.json', function ( geometry ) {
+    var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                    color: new THREE.Color(TABLE_COLORS.cloth),
+                    specular: 0x404040,
+                    shininess: 20,
+                    shading: THREE.SmoothShading
+            }));
 
-Table.LEN_Z = 140;
-Table.LEN_X = 270;
+        mesh.position.x =-137;
+        mesh.position.y =0;
+        mesh.position.z =63.5;
+        mesh.scale.set( 100, 100, 100 );
+        scene.add( mesh );
+    });
 
-Table.WALL_HEIGHT = 6;
-
-function Table() {
-    this.createFloor();
-    this.createWalls();
-    
 
     this.rigidBody = this.createBody(); //floor
 
-    this.walls = this.createWalls(); 
-    
+    this.walls = this.createWallBodies();
 };
 
+var TABLE_COLORS = {
+    cloth : "#4d9900"
+};
+
+Table.LEN_Z = 116;
+Table.LEN_X = 264;
+Table.WALL_HEIGHT = 6;
 Table.floorContactMaterial = new CANNON.Material("floorMaterial");
 Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 
@@ -76,7 +86,7 @@ Table.prototype.createBody = function(){
 /**
     Creates a plane, with a rotated normal instead of the the default +w
     @vector - cannon.vec3 for axis to rotate from
-    @ degree - degrees to rotate in radians
+    @degree - degrees to rotate in radians
 */
 var createRotatedTableSidePlane = function(position, vector, degree, material){
     var wallBody = new CANNON.Body({
@@ -91,38 +101,6 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
     return wallBody;
 
 };
-Table.prototype.createWalls = function() {
-    var halfPi = Math.PI / 2;
-    var geometry = new THREE.PlaneGeometry(Table.LEN_X, Table.LEN_Z);
-    var material = new THREE.MeshPhongMaterial( {
-            color: new THREE.Color(Table.COLORS.cloth),
-            specular: 0x404040,
-            shininess: 20,
-            shading: THREE.SmoothShading
-        } );
-
-    var leftWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_X, Table.WALL_HEIGHT), material);
-    leftWall.position.set(0, Table.WALL_HEIGHT / 2.0, -Table.LEN_Z / 2.0);
-    scene.add(leftWall);
-
-    var rightWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_X, Table.WALL_HEIGHT), material);
-    rightWall.position.set(0, Table.WALL_HEIGHT / 2.0, Table.LEN_Z / 2.0);
-    scene.add(rightWall);
-    
-
-    var topWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_Z, Table.WALL_HEIGHT), material);
-    topWall.position.set(-Table.LEN_X / 2.0, Table.WALL_HEIGHT / 2.0, 0);
-    topWall.rotation.set(0, halfPi, 0);
-    scene.add(topWall);
-
-    var bottomWall = new THREE.Mesh(new THREE.PlaneGeometry(Table.LEN_Z, Table.WALL_HEIGHT), material);
-    bottomWall.position.set(Table.LEN_X / 2.0, Table.WALL_HEIGHT / 2.0, 0);
-    bottomWall.rotation.set(0, -halfPi, 0);
-    scene.add(bottomWall);
-
-    //create physics bodies:
-    this.walls = this.createWallBodies();
-}
 
 Table.prototype.createFloor = function() {
     var geometry = new THREE.PlaneGeometry(Table.LEN_X, Table.LEN_Z);
@@ -138,5 +116,5 @@ Table.prototype.createFloor = function() {
     var floor = new THREE.Mesh(geometry, material);
     floor.receiveShadow = true;
     floor.rotation.set(-Math.PI / 2, 0, 0);
-    scene.add(floor);  
+    scene.add(floor);
 }
