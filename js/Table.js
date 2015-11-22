@@ -8,10 +8,12 @@ var Table = function() {
                     shading: THREE.SmoothShading
             }));
 
-        mesh.position.x =-137;
-        mesh.position.y =0;
-        mesh.position.z =63.5;
+        mesh.position.x = -137;
+        mesh.position.y = 0;
+        mesh.position.z = 63.5;
         mesh.scale.set( 100, 100, 100 );
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
         scene.add( mesh );
     });
 
@@ -31,9 +33,6 @@ Table.WALL_HEIGHT = 6;
 Table.floorContactMaterial = new CANNON.Material("floorMaterial");
 Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 
-Table.prototype.getFloorMaterial = function(){
-    return this.rigidBody.material;
-};
 
 /** Creates cannon js walls*/
 Table.prototype.createWallBodies = function(){
@@ -101,20 +100,3 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
     return wallBody;
 
 };
-
-Table.prototype.createFloor = function() {
-    var geometry = new THREE.PlaneGeometry(Table.LEN_X, Table.LEN_Z);
-
-    var material = new THREE.MeshPhongMaterial( {
-            color: new THREE.Color(Table.COLORS.cloth),
-            specular: 0x404040,
-            shininess: 20,
-            shading: THREE.SmoothShading
-        } );
-
-
-    var floor = new THREE.Mesh(geometry, material);
-    floor.receiveShadow = true;
-    floor.rotation.set(-Math.PI / 2, 0, 0);
-    scene.add(floor);
-}
