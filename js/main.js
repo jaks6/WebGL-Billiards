@@ -72,9 +72,6 @@ function onLoad() {
     controls.enablePan = true;
 
     camera.position.set(-170,70,0);
-    //camera.position.y = 80;
-
-    //camera.lookAt(new THREE.Vector3(0));
 
 
 
@@ -94,7 +91,10 @@ function onLoad() {
     // gui.add(lightsConfig, 'exponent',1,10);
     // gui.add(lightsConfig, 'decay',0,5);
 
-    btn_ball.onclick = function() { game.ballXHit(); };
+    btn_ball.onclick = function() {
+        var strength = Number(document.getElementById('range_strength').value);
+        game.ballHit(strength); 
+    };
     draw();
 }
 function createPhysicsWorld(){
@@ -201,10 +201,10 @@ function addLights() {
     light2.shadowCameraFar = 160;
 
     //for debugging
-    var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
-    scene.add(shadowCam1);
-    var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
-    scene.add(shadowCam2);
+    // var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
+    // scene.add(shadowCam1);
+    // var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
+    // scene.add(shadowCam2);
 
     scene.add(light1);
     scene.add(light2);

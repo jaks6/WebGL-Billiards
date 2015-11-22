@@ -13,22 +13,7 @@ Ball.RADIUS = 5.715 / 2; // cm
 Ball.MASS = 0.170; // kg
 Ball.contactMaterial = new CANNON.Material("ballMaterial");
 
-/** Applies a force to this ball to make it move.
-    The force is a vector specified by the argument.
-    The force is behind the ball */
-Ball.prototype.hitForce = function(forceX, forceY,forceZ){
-	var ballPoint = new CANNON.Vec3();
-	ballPoint.copy(this.rigidBody.position);
-	var vec = new CANNON.Vec3(forceX, forceY, forceZ);
-	vec.normalize();
-	vec.scale(Ball.RADIUS, vec);
-	ballPoint.vsub(vec, ballPoint);
-	
-    var force = new CANNON.Vec3(forceX,forceY,forceZ);
-    force.scale(10,force);
-    this.rigidBody.applyImpulse(force, ballPoint);
 
-}
 
 Ball.prototype.createBody = function(x,y,z){
 	var sphereBody = new CANNON.Body({

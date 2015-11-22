@@ -8,7 +8,7 @@ function Game() {
 
 
   this.balls =
-    [new Ball( -Table.LEN_X / 4, Ball.RADIUS, 0, 0xffffff),
+    [new WhiteBall( -Table.LEN_X / 4, Ball.RADIUS, 0),
 
     // First row
     new Ball(X_offset, Ball.RADIUS, 4 * Ball.RADIUS),
@@ -50,6 +50,6 @@ Game.prototype.randomBallHit = function() {
   this.balls[0].hitForce(40*Math.random()-20,0,40*Math.random() -20);
 }
 
-Game.prototype.ballXHit = function() {
-  this.balls[0].hitForce(10,0,0);
+Game.prototype.ballHit = function(strength) {
+  this.balls[0].hitForward(strength);
 }
