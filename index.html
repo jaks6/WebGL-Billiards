@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
 		<script type="text/javascript" src="lib/dat.gui.js"></script>
 		<script type="text/javascript" src="js/Ball.js"></script>
+		<script type="text/javascript" src="js/WhiteBall.js"></script>
 		<script type="text/javascript" src="js/Table.js"></script>
 		<script type="text/javascript" src="js/Game.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
@@ -21,9 +22,20 @@
 	<body onload="onLoad()">
 
 		<div id="canvas"></div>
-		<div id="control-buttons">
-			<button id=btn_ball type="button" class="btn btn-success">Hit</button>
+		<div class="container">
+			<div class="row control-button">
+			
+				<div class="col-md-2 col-md-offset-4">
+					<form>
+						<input id="range_strength" type="range" name="strength" min="10" max="100">
+					</form>
+				</div>
+				<div class="col-md-2 text-center">
+					<button id="btn_ball" type="button" class="btn btn-success">Hit</button>
+				</div>
+			</div>
 		</div>
+
 		<div class="jumbotron guide">
 		    <p>Use the mouse to look around, click on the button to make the white ball move.</p>
 		</div>

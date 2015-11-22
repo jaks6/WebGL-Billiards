@@ -15,14 +15,14 @@ var fixedTimeStep = 1.0 / 60.0; // seconds
 var VIEW_ANGLE = 45,
   ASPECT = WIDTH / HEIGHT,
   NEAR = 1,
-  FAR = 10000;
+  FAR = 1000;
 
 //We use the clock to measure time, an extension for the keyboard
-var clock = new THREE.Clock();      
+var clock = new THREE.Clock();
 
-function onLoad() { 
-    var canvasContainer = document.getElementById('canvas'); 
-    var btn_ball = document.getElementById('btn_ball'); 
+function onLoad() {
+    var canvasContainer = document.getElementById('canvas');
+    var btn_ball = document.getElementById('btn_ball');
 
     // create a WebGL renderer, camera
     // and a scene
@@ -60,7 +60,7 @@ function onLoad() {
     // Populate meshes and physics bodies:
     game = new Game();
     // Define how different objects interect physics-wise:
-    configureMaterials();
+    setCollisionBehaviour();
     // Configure lighting:
     addLights();
 
@@ -72,29 +72,29 @@ function onLoad() {
     controls.enablePan = true;
 
     camera.position.set(-170,70,0);
-    //camera.position.y = 80;
 
-    //camera.lookAt(new THREE.Vector3(0));
-    
 
-    
-    //make the background void a grey color instead of black.  
+
+    //make the background void a grey color instead of black.
     renderer.setClearColor(0x262626, 1);
-    
+
 
     //lightsConfig = new getLightsConfig();
     renderer.render(scene, camera);
 
-    
+
     // var gui = new dat.GUI();
-        
+
     // gui.add(lightsConfig, 'anglePiDivisor',3,10);
     // gui.add(lightsConfig, 'distance',0,2000);
     // gui.add(lightsConfig, 'intensity',0,1);
     // gui.add(lightsConfig, 'exponent',1,10);
     // gui.add(lightsConfig, 'decay',0,5);
 
-    btn_ball.onclick = function() { game.ballXHit(); };
+    btn_ball.onclick = function() {
+        var strength = Number(document.getElementById('range_strength').value);
+        game.ballHit(strength); 
+    };
     draw();
 }
 function createPhysicsWorld(){
@@ -113,38 +113,38 @@ function createPhysicsWorld(){
     !TODO figure out whether the definition of Contactmaterials should be defined in
     some other place. For example, perhaps each ball object should define it's contactmaterial
     with the walls itself?*/
-function configureMaterials(){
+function setCollisionBehaviour(){
 
     world.defaultContactMaterial.friction = 0.1;
     world.defaultContactMaterial.restitution = 0.85;
-    
+
     var ball_floor = new CANNON.ContactMaterial(
-        Ball.contactMaterial, 
-        Table.floorContactMaterial, 
+        Ball.contactMaterial,
+        Table.floorContactMaterial,
         { friction: 0.7, restitution: 0.1});
 
     var ball_wall = new CANNON.ContactMaterial(
-        Ball.contactMaterial, 
-        Table.wallContactMaterial, 
+        Ball.contactMaterial,
+        Table.wallContactMaterial,
         { friction: 0.5, restitution: 0.9});
-    
+
 
     world.addContactMaterial(ball_floor);
     world.addContactMaterial(ball_wall);
 }
 
 function draw() {
-    var dt = clock.getDelta();  
+    var dt = clock.getDelta();
 
     requestAnimationFrame(draw);
-    
+
     controls.target.copy(game.balls[0].mesh.position );
     controls.update();
     world.step(fixedTimeStep);
     game.tick(dt);
-    
-    
-    //DAT.gui: update light configuration 
+
+
+    //DAT.gui: update light configuration
     // light1.distance = lightsConfig.distance;
     // light1.intensity = lightsConfig.intensity;
     // light1.angle = Math.PI/ lightsConfig.anglePiDivisor;
@@ -156,12 +156,12 @@ function draw() {
     // light2.angle = Math.PI/ lightsConfig.anglePiDivisor;
     // light2.exponent = lightsConfig.exponent;
     // light2.decay = lightsConfig.decay;
-    
+
 
     renderer.render(scene, camera); //We render our scene with our camera
 }
 
-/** This was created just so that one could play around 
+/** This was created just so that one could play around
     with different lighting settings more easily */
 var getLightsConfig = function(){
     this.anglePiDivisor = 3;
@@ -178,26 +178,27 @@ function addLights() {
     //scene.add( light );
 
     light1 = new THREE.SpotLight(0xffffe5, 1);
-    light1.position.set(TABLE_LEN_X / 4, 110, 0);
-    light1.target.position.set(TABLE_LEN_X / 4, 0, 0);
+
+    light1.position.set(Table.LEN_X / 4, 150, 0);
+    light1.target.position.set(Table.LEN_X / 4, 0, 0);
     light1.target.updateMatrixWorld();
 
-
     light1.castShadow = true;
-    light1.shadowCameraFov = 65;
-    light1.shadowCameraFar = 115;
+    light1.shadowCameraFov = 70;
+    light1.shadowCameraNear = 100;
+    light1.shadowCameraFar = 160;
 
 
-    
 
     light2 = new THREE.SpotLight(0xffffe5);
-    light2.position.set(-TABLE_LEN_X / 4, 110, 0);
-    light2.target.position.set(-TABLE_LEN_X / 4, 0, 0);
+    light2.position.set(-Table.LEN_X / 4, 150, 0);
+    light2.target.position.set(-Table.LEN_X / 4, 0, 0);
     light2.target.updateMatrixWorld();
 
     light2.castShadow = true;
-    light2.shadowCameraFov = 65;
-    light2.shadowCameraFar = 115;
+    light2.shadowCameraFov = 70;
+    light2.shadowCameraNear = 100;
+    light2.shadowCameraFar = 160;
 
     //for debugging
     // var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
@@ -207,17 +208,5 @@ function addLights() {
 
     scene.add(light1);
     scene.add(light2);
-
-
-    //Add some simple boxes to depict the light source positions.
-    // var geometry = new THREE.BoxGeometry( 20, 10, 20);
-    // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    // var cube1 = new THREE.Mesh( geometry, material );
-    // var cube2 = new THREE.Mesh( geometry, material );
-
-    // cube1.position.set(TABLE_LEN_X / 4, 90, 0);
-    // cube2.position.set(-TABLE_LEN_X / 4, 90, 0);
-    // scene.add(cube1);
-    // scene.add(cube2);
-
 }
+
