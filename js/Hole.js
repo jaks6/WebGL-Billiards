@@ -17,8 +17,8 @@ var Hole = function (x, y, z) {
   });
   this.arch2.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), 2*Math.PI);
 
-  world.addBody(this.arch2.body);
-  addCannonVisual(this.arch2.body);
+  world.addBody(this.arch1.body);
+  addCannonVisual(this.arch1.body);
 
   world.addBody(this.arch2.body);
   addCannonVisual(this.arch2.body);
