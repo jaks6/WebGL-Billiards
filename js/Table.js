@@ -18,9 +18,13 @@ var Table = function() {
     });
 
 
-    this.rigidBody = this.createBody(); //floor
+    //this.rigidBody = this.createBody(); //floor
+    this.rigidBody = this.createFloor(); //floor
 
-    this.walls = this.createWallBodies();
+    this.hole1 = new Hole(0,0, -Table.LEN_Z/2 -4.8);
+    //this.hole2 = new Hole(0,-7, -Table.LEN_Z/2 +8);
+
+    //this.walls = this.createWallBodies();
 };
 
 var TABLE_COLORS = {
@@ -68,7 +72,17 @@ Table.prototype.createWallBodies = function(){
     return walls;
 };
 
+Table.prototype.createFloor = function(){
+    var floorBox = new CANNON.Box(new CANNON.Vec3(Table.LEN_X/2, 0.1, Table.LEN_Z/2));
+    this.body = new CANNON.Body({
+        mass: 0, // mass == 0 makes the body static
+        material: Table.floorContactMaterial
+    });
+    this.body.addShape(floorBox);
 
+    this.addVisual(this.body);
+    world.add(this.body);
+}
 Table.prototype.createBody = function(){
     var groundBody = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
@@ -100,3 +114,29 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
     return wallBody;
 
 };
+
+/** adapted from cannon.demo.js 
+Adds a wireframe of the argument to the scene,
+assumes that the argument is a box_geometry*/
+Table.prototype.addVisual = function(body){
+    if(body instanceof CANNON.Body){
+
+        var obj = new THREE.Object3D();
+
+        for (var l = 0; l < body.shapes.length; l++) {
+            var shape = body.shapes[l];
+            var box_geometry = new THREE.BoxGeometry(  shape.halfExtents.x*2,
+                                                        shape.halfExtents.y*2,
+                                                        shape.halfExtents.z*2 );
+            mesh = new THREE.Mesh( box_geometry, new THREE.MeshBasicMaterial( {color : 0xffffff,wireframe: true}) );
+
+            obj.add(mesh);
+        }
+
+        obj.position.copy(body.position);
+        obj.quaternion.copy(body.quaternion);
+
+        scene.add(obj);
+    }
+    
+}
