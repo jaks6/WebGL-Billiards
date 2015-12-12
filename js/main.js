@@ -98,7 +98,7 @@ function onLoad() {
     draw();
 }
 function createPhysicsWorld(){
-    w = new CANNON.World()
+    w = new CANNON.World();
     w.gravity.set(0, 30 * -9.82, 0); // m/s²
 
     w.solver.iterations = 10;
@@ -184,9 +184,11 @@ function addLights() {
     light1.target.updateMatrixWorld();
 
     light1.castShadow = true;
-    light1.shadowCameraFov = 70;
+    light1.shadowCameraFov = 110;
     light1.shadowCameraNear = 100;
     light1.shadowCameraFar = 160;
+    light1.shadowMapWidth = 1024;
+    light1.shadowMapHeight = 1024;
 
 
 
@@ -196,15 +198,19 @@ function addLights() {
     light2.target.updateMatrixWorld();
 
     light2.castShadow = true;
-    light2.shadowCameraFov = 70;
+    light2.shadowCameraFov = 110;
     light2.shadowCameraNear = 100;
     light2.shadowCameraFar = 160;
+    light2.shadowMapWidth = 1024;
+    light2.shadowMapHeight = 1024;
 
-    //for debugging
-    // var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
-    // scene.add(shadowCam1);
-    // var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
-    // scene.add(shadowCam2);
+    if (debug){
+        var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
+        scene.add(shadowCam1);
+        var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
+        scene.add(shadowCam2); 
+    }
+    
 
     scene.add(light1);
     scene.add(light2);

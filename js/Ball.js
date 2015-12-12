@@ -7,15 +7,18 @@ var Ball = function(x,y,z,color) {
 	this.rigidBody = this.createBody(x,y,z);
 	world.addBody(this.rigidBody);
 	
-}
+};
 
 Ball.RADIUS = 5.715 / 2; // cm
 Ball.MASS = 0.170; // kg
 Ball.contactMaterial = new CANNON.Material("ballMaterial");
 
 
+Ball.prototype.onEnterHole = function() {
+    world.removeBody(this.rigidBody);
+};
 
-Ball.prototype.createBody = function(x,y,z){
+Ball.prototype.createBody = function(x,y,z) {
 	var sphereBody = new CANNON.Body({
 	   mass: Ball.MASS, // kg
 	   position: new CANNON.Vec3(x,y,z), // m
@@ -25,7 +28,7 @@ Ball.prototype.createBody = function(x,y,z){
 	sphereBody.linearDamping = sphereBody.angularDamping = 0.5; // Hardcode
 	
 	return sphereBody;
-}
+};
 
 
 Ball.prototype.createMesh = function(x,y,z) {
@@ -48,9 +51,15 @@ Ball.prototype.createMesh = function(x,y,z) {
 
     return sphere;
 
-}
+};
 
 Ball.prototype.tick = function(dt) {
-      this.mesh.position.copy(this.rigidBody.position);
-      this.mesh.quaternion.copy(this.rigidBody.quaternion);
-}
+    this.mesh.position.copy(this.rigidBody.position);
+    this.mesh.quaternion.copy(this.rigidBody.quaternion);
+
+    //Has the ball fallen into a hole?
+    if (this.rigidBody.position.y < -4 * Ball.RADIUS){
+    	console.log("In hole!");
+    	this.onEnterHole();
+    }
+};
