@@ -1,10 +1,12 @@
 var WhiteBall = function(x, y, z) {
+	this.defaultPosition = new CANNON.Vec3( -Table.LEN_X / 4, Ball.RADIUS, 0);
 	// Call the parent constructor, making sure (using Function#call)
 	// that "this" is set correctly during the call
-	Ball.call(this, x, y, z, 0xffffff);
+	Ball.call(this, this.defaultPosition.x, this.defaultPosition.y, this.defaultPosition.z, 0xffffff);
 
 	this.forward = new THREE.Vector3(1,0,0);
 	this.forwardLine = this.createForwardLine();
+
 	scene.add(this.forwardLine);
 
 };
@@ -16,7 +18,7 @@ WhiteBall.prototype.constructor = WhiteBall;
     The strength of the force is given by the argument
     The force is the balls "forward" vector, applied at the
     edge of the ball in the opposite direction of the "forward"*/
-Ball.prototype.hitForward = function(strength){
+WhiteBall.prototype.hitForward = function(strength){
 	var ballPoint = new CANNON.Vec3();
 	ballPoint.copy(this.rigidBody.position);
 
@@ -33,10 +35,19 @@ Ball.prototype.hitForward = function(strength){
     this.rigidBody.applyImpulse(force, ballPoint);
 };
 
+WhiteBall.prototype.onEnterHole = function() {
+    
+    this.rigidBody.velocity = new CANNON.Vec3(0);
+    // this.rigidBody.inertia = new CANNON.Vec3(0);
+    // this.rigidBody.torque = new CANNON.Vec3(0);
+    // this.rigidBody.force = new CANNON.Vec3(0);
+    this.rigidBody.angularVelocity = new CANNON.Vec3(0);
+    this.rigidBody.position.copy(this.defaultPosition);
+  };
+
 WhiteBall.prototype.tick = function(dt) {
-	//TODO figure out if superclass .tick() can be called instead of the next two lines
-    this.mesh.position.copy(this.rigidBody.position);
-    this.mesh.quaternion.copy(this.rigidBody.quaternion);
+	//Superclass tick behaviour:
+    Ball.prototype.tick.apply(this, arguments);
 
     var angle = controls.getAzimuthalAngle() + Math.PI / 2;
     this.forward.set(Math.cos(angle), 0, -Math.sin(angle));

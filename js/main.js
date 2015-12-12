@@ -3,7 +3,7 @@ var WIDTH   = 960,
 
 //globals
 var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
-var debug = true; //if true then collision wireframes are drawn
+var debug = false; //if true then collision wireframes are drawn
 // instantiate a TextureLoader
 var textureLoader = new THREE.TextureLoader();
 
