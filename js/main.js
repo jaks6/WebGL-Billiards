@@ -3,7 +3,7 @@ var WIDTH   = 960,
 
 //globals
 var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
-
+var debug = false; //if true then collision wireframes are drawn
 // instantiate a TextureLoader
 var textureLoader = new THREE.TextureLoader();
 
@@ -101,7 +101,7 @@ function createPhysicsWorld(){
     w = new CANNON.World()
     w.gravity.set(0, 30 * -9.82, 0); // m/s²
 
-    w.solver.iterations = 20;
+    w.solver.iterations = 10;
     w.solver.tolerance = 0;   // Force solver to use all iterations
 
     return w;
