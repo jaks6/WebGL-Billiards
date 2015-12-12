@@ -134,29 +134,18 @@ function setCollisionBehaviour(){
 }
 
 function draw() {
-    var dt = clock.getDelta();
-
     requestAnimationFrame(draw);
 
+    //Controls
     controls.target.copy(game.balls[0].mesh.position );
     controls.update();
+
+    //Physics world
     world.step(fixedTimeStep);
+
+    //THREE objects
+    var dt = clock.getDelta();
     game.tick(dt);
-
-
-    //DAT.gui: update light configuration
-    // light1.distance = lightsConfig.distance;
-    // light1.intensity = lightsConfig.intensity;
-    // light1.angle = Math.PI/ lightsConfig.anglePiDivisor;
-    // light1.exponent = lightsConfig.exponent;
-    // light1.decay = lightsConfig.decay;
-
-    // light2.distance = lightsConfig.distance;
-    // light2.intensity = lightsConfig.intensity;
-    // light2.angle = Math.PI/ lightsConfig.anglePiDivisor;
-    // light2.exponent = lightsConfig.exponent;
-    // light2.decay = lightsConfig.decay;
-
 
     renderer.render(scene, camera); //We render our scene with our camera
 }
@@ -174,45 +163,10 @@ var getLightsConfig = function(){
 
 /** Adds an ambient light and two spotlights above the table */
 function addLights() {
-    //var light = new THREE.AmbientLight( 0x303030 ); // soft white ambient light
-    //scene.add( light );
-
-    light1 = new THREE.SpotLight(0xffffe5, 1);
-
-    light1.position.set(Table.LEN_X / 4, 150, 0);
-    light1.target.position.set(Table.LEN_X / 4, 0, 0);
-    light1.target.updateMatrixWorld();
-
-    light1.castShadow = true;
-    light1.shadowCameraFov = 110;
-    light1.shadowCameraNear = 100;
-    light1.shadowCameraFar = 160;
-    light1.shadowMapWidth = 1024;
-    light1.shadowMapHeight = 1024;
-
-
-
-    light2 = new THREE.SpotLight(0xffffe5);
-    light2.position.set(-Table.LEN_X / 4, 150, 0);
-    light2.target.position.set(-Table.LEN_X / 4, 0, 0);
-    light2.target.updateMatrixWorld();
-
-    light2.castShadow = true;
-    light2.shadowCameraFov = 110;
-    light2.shadowCameraNear = 100;
-    light2.shadowCameraFar = 160;
-    light2.shadowMapWidth = 1024;
-    light2.shadowMapHeight = 1024;
-
-    if (debug){
-        var shadowCam1  = new THREE.CameraHelper(light1.shadow.camera);
-        scene.add(shadowCam1);
-        var shadowCam2  = new THREE.CameraHelper(light2.shadow.camera);
-        scene.add(shadowCam2); 
-    }
-    
-
-    scene.add(light1);
-    scene.add(light2);
+    var light = new THREE.AmbientLight( 0x0d0d0d ); // soft white ambient light
+    scene.add( light );
+    var tableLight1 = new TableLight(Table.LEN_X / 4, 150, 0);
+    var tableLight2 = new TableLight(-Table.LEN_X / 4, 150, 0);
+  
 }
 
