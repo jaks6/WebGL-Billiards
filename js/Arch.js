@@ -24,7 +24,7 @@ var Arch = function (params) {
 
 
   var box_increment_angle = Math.PI / (2 * this.no_of_boxes); //base value for the angle of a boxes center to the center of the circle
-  //get box x-len according to radius (this introduces slight overlap):
+  //get box x-len according to radius so that there is no overlap
   var x_len = this.radius * Math.tan(box_increment_angle);
 
   if (!this.box_autowidth){
