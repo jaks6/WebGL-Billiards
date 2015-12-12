@@ -11,7 +11,7 @@ var WhiteBall = function(x, y, z) {
 
 };
 
-WhiteBall.prototype = Object.create(Ball.prototype); // See note below
+WhiteBall.prototype = Object.create(Ball.prototype);
 WhiteBall.prototype.constructor = WhiteBall;
 
 /** Applies a force to this ball to make it move.
@@ -35,12 +35,9 @@ WhiteBall.prototype.hitForward = function(strength){
     this.rigidBody.applyImpulse(force, ballPoint);
 };
 
-WhiteBall.prototype.onEnterHole = function() {
-    
+/** Resets the position to this.defaultPosition */
+WhiteBall.prototype.onEnterHole = function() {    
     this.rigidBody.velocity = new CANNON.Vec3(0);
-    // this.rigidBody.inertia = new CANNON.Vec3(0);
-    // this.rigidBody.torque = new CANNON.Vec3(0);
-    // this.rigidBody.force = new CANNON.Vec3(0);
     this.rigidBody.angularVelocity = new CANNON.Vec3(0);
     this.rigidBody.position.copy(this.defaultPosition);
   };

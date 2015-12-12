@@ -17,8 +17,6 @@ var Table = function() {
         scene.add( mesh );
     });
 
-
-    //this.rigidBody = this.createBody(); //floor
     this.rigidBody = this.createFloor(); //floor
 
     //corners of -z table side
@@ -46,7 +44,8 @@ Table.floorContactMaterial = new CANNON.Material("floorMaterial");
 Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 
 
-/** Creates cannon js walls*/
+/** Creates cannon js walls
+This method is 3am spaghetti, you've been warned..*/
 Table.prototype.createWallBodies = function(){
     //walls of -z
     var wall1 = new LongWall( 264/4 - 0.8, 2, -Table.LEN_Z/2, 59);
@@ -95,35 +94,4 @@ Table.prototype.createFloor = function(){
 
     if (debug) addCannonVisual(this.body);
     world.add(this.body);
-};
-Table.prototype.createBody = function(){
-    var groundBody = new CANNON.Body({
-        mass: 0, // mass == 0 makes the body static
-        material: Table.floorContactMaterial
-    });
-    var groundShape = new CANNON.Plane();
-    groundBody.addShape(groundShape);
-    //default plane normal is +z, rotate it on x-axis -90 deg
-    groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-    world.addBody(groundBody);
-    return groundBody;
-};
-
-/**
-    Creates a plane, with a rotated normal instead of the the default +w
-    @vector - cannon.vec3 for axis to rotate from
-    @degree - degrees to rotate in radians
-*/
-var createRotatedTableSidePlane = function(position, vector, degree, material){
-    var wallBody = new CANNON.Body({
-        mass: 0, // mass == 0 makes the body static
-        material: Table.wallContactMaterial
-    });
-    wallBody.addShape(new CANNON.Plane());
-    //default plane normal is +z, rotate it on x-axis -90 deg
-    wallBody.quaternion.setFromAxisAngle(vector,degree);
-    wallBody.position = position;
-    world.addBody(wallBody);
-    return wallBody;
-
 };
