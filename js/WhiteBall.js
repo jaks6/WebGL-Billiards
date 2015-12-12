@@ -1,8 +1,14 @@
 var WhiteBall = function(x, y, z) {
+	this.color = 0xffffff;
 	this.defaultPosition = new CANNON.Vec3( -Table.LEN_X / 4, Ball.RADIUS, 0);
 	// Call the parent constructor, making sure (using Function#call)
 	// that "this" is set correctly during the call
-	Ball.call(this, this.defaultPosition.x, this.defaultPosition.y, this.defaultPosition.z, 0xffffff);
+	Ball.call(this,
+		this.defaultPosition.x,
+		this.defaultPosition.y,
+		this.defaultPosition.z,
+		undefined,
+		this.color);
 
 	this.forward = new THREE.Vector3(1,0,0);
 	this.forwardLine = this.createForwardLine();
