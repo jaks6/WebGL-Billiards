@@ -10,7 +10,7 @@ var Table = function() {
 
         mesh.position.x = -137;
         mesh.position.y = 0;
-        mesh.position.z = 63.5;
+        mesh.position.z = 63.25;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -21,10 +21,18 @@ var Table = function() {
     //this.rigidBody = this.createBody(); //floor
     this.rigidBody = this.createFloor(); //floor
 
-    this.hole1 = new Hole(0,0, -Table.LEN_Z/2 -4.8);
-    //this.hole2 = new Hole(0,-7, -Table.LEN_Z/2 +8);
+    //corners of -z table side
+    this.hole1 = new Hole( Table.LEN_X/2 + 2, 0, -Table.LEN_Z/2 -2,  Math.PI/4);
+    this.hole2 = new Hole(-Table.LEN_X/2 - 2, 0, -Table.LEN_Z/2 -2, -Math.PI/4);
+    //middle holes
+    this.hole3 = new Hole(0, 0, -Table.LEN_Z/2 - 4.8, 0);
+    this.hole4 = new Hole(0, 0,  Table.LEN_Z/2 + 4.8, Math.PI);
+    //corners of +z table side
+    this.hole5 = new Hole( Table.LEN_X/2 + 2, 0, Table.LEN_Z/2 +2,  3 * Math.PI/4);
+    this.hole6 = new Hole(-Table.LEN_X/2 - 2, 0, Table.LEN_Z/2 +2, -3 * Math.PI/4);
 
-    //this.walls = this.createWallBodies();
+
+    this.walls = this.createWallBodies();
 };
 
 var TABLE_COLORS = {
@@ -40,49 +48,54 @@ Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 
 /** Creates cannon js walls*/
 Table.prototype.createWallBodies = function(){
-    var walls = [
-    // wall with normal of -z
-    createRotatedTableSidePlane(
-        new CANNON.Vec3(0, 0, Table.LEN_Z / 2),
-        new CANNON.Quaternion(0, 1, 0),
-        Math.PI
-        ),
+    //walls of -z
+    var wall1 = new LongWall( 264/4 - 0.8, 2, -Table.LEN_Z/2, 59);
+    var wall2 = new LongWall(-264/4 + 0.8, 2, -Table.LEN_Z/2, 59);
+    wall2.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI);
 
-    // wall with normal of +z
-    createRotatedTableSidePlane(
-        new CANNON.Vec3(0, 0, -Table.LEN_Z / 2),
-        new CANNON.Quaternion(0, 1, 0),
-        0
-        ),
+    //walls of -z
+    var wall3 = new LongWall( 264/4 - 0.8,  2, Table.LEN_Z/2, 59);
+    var wall4 = new LongWall(-264/4 + 0.8, 2, Table.LEN_Z/2, 59);
+    wall3.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI);
+    wall4.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI);
 
-    // wall with normal of -x
-    createRotatedTableSidePlane(
-        new CANNON.Vec3(Table.LEN_X / 2, 0, 0),
-        new CANNON.Quaternion(0, 1, 0),
-        -Math.PI / 2
-        ),
+    //wall of +x
+    var wall5 = new ShortWall(264/2,  2, 0, 50);
 
-    // wall with normal of +x
-    createRotatedTableSidePlane(
-        new CANNON.Vec3(-Table.LEN_X / 2, 0, 0),
-        new CANNON.Quaternion(0, 1, 0),
-        Math.PI / 2
-        )
-    ];
+    //wall of -x
+    var wall6 = new ShortWall(-264/2,  2, 0, 50);
+    wall6.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -1.5*Math.PI);
+
+    var walls = [ wall1,wall2,wall3,wall4,wall5,wall6 ];
+    for (var i in walls){
+        world.addBody(walls[i].body);
+        if (debug) addCannonVisual(walls[i].body);
+    }
     return walls;
 };
 
 Table.prototype.createFloor = function(){
-    var floorBox = new CANNON.Box(new CANNON.Vec3(Table.LEN_X/2, 0.1, Table.LEN_Z/2));
+    var narrowStripWidth = 2.5;
+    var floorThickness = 0.1;
+    var mainAreaX = Table.LEN_X/2 - 2*narrowStripWidth;
+
+    var floorBox = new CANNON.Box(new CANNON.Vec3(mainAreaX, floorThickness, Table.LEN_Z/2));
+    var floorBoxSmall = new CANNON.Box(
+        new CANNON.Vec3(narrowStripWidth, floorThickness, Table.LEN_Z/2 - 8));
+    
     this.body = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
         material: Table.floorContactMaterial
     });
     this.body.addShape(floorBox);
+    this.body.addShape(floorBoxSmall,
+        new CANNON.Vec3( -mainAreaX - narrowStripWidth, 0, 0));
+    this.body.addShape(floorBoxSmall,
+        new CANNON.Vec3( mainAreaX + narrowStripWidth, 0, 0));
 
-    this.addVisual(this.body);
+    if (debug) addCannonVisual(this.body);
     world.add(this.body);
-}
+};
 Table.prototype.createBody = function(){
     var groundBody = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
@@ -114,29 +127,3 @@ var createRotatedTableSidePlane = function(position, vector, degree, material){
     return wallBody;
 
 };
-
-/** adapted from cannon.demo.js 
-Adds a wireframe of the argument to the scene,
-assumes that the argument is a box_geometry*/
-Table.prototype.addVisual = function(body){
-    if(body instanceof CANNON.Body){
-
-        var obj = new THREE.Object3D();
-
-        for (var l = 0; l < body.shapes.length; l++) {
-            var shape = body.shapes[l];
-            var box_geometry = new THREE.BoxGeometry(  shape.halfExtents.x*2,
-                                                        shape.halfExtents.y*2,
-                                                        shape.halfExtents.z*2 );
-            mesh = new THREE.Mesh( box_geometry, new THREE.MeshBasicMaterial( {color : 0xffffff,wireframe: true}) );
-
-            obj.add(mesh);
-        }
-
-        obj.position.copy(body.position);
-        obj.quaternion.copy(body.quaternion);
-
-        scene.add(obj);
-    }
-    
-}

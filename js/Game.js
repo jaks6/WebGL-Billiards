@@ -8,10 +8,7 @@ function Game() {
 
 
   this.balls =
-    [
-    //new WhiteBall( -Table.LEN_X / 4, Ball.RADIUS, 0),
-    new WhiteBall( 0, Ball.RADIUS, -Table.LEN_Z/2+ 10),
-
+    [new WhiteBall( -Table.LEN_X / 4, Ball.RADIUS, 0),
 
     // First row
     new Ball(X_offset, Ball.RADIUS, 4 * Ball.RADIUS),

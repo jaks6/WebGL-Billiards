@@ -18,7 +18,6 @@ var Arch = function (params) {
   this.no_of_boxes = params.no_of_boxes || 5;
 
 
-
   this.body.position.set(this.position.x, this.position.y, this.position.z);
   y_axis = new CANNON.Vec3(0, 1, 0);
   this.body.quaternion.setFromAxisAngle(y_axis, Math.PI);
@@ -27,12 +26,11 @@ var Arch = function (params) {
   var box_increment_angle = Math.PI / (2 * this.no_of_boxes); //base value for the angle of a boxes center to the center of the circle
   //get box x-len according to radius (this introduces slight overlap):
   var x_len = this.radius * Math.tan(box_increment_angle);
-  
+
   if (!this.box_autowidth){
     x_len = this.box_width;
   }
   
-  console.log(x_len);
   // Use a box shape as child shape
   var shape = new CANNON.Box(new CANNON.Vec3(x_len, this.box_height, this.box_thickness));
   
