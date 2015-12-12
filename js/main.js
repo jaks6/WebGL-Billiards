@@ -98,7 +98,7 @@ function onLoad() {
     draw();
 }
 function createPhysicsWorld(){
-    w = new CANNON.World()
+    w = new CANNON.World();
     w.gravity.set(0, 30 * -9.82, 0); // m/s²
 
     w.solver.iterations = 10;

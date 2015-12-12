@@ -7,7 +7,7 @@ var Ball = function(x,y,z,color) {
 	this.rigidBody = this.createBody(x,y,z);
 	world.addBody(this.rigidBody);
 	
-}
+};
 
 Ball.RADIUS = 5.715 / 2; // cm
 Ball.MASS = 0.170; // kg
@@ -25,7 +25,7 @@ Ball.prototype.createBody = function(x,y,z){
 	sphereBody.linearDamping = sphereBody.angularDamping = 0.5; // Hardcode
 	
 	return sphereBody;
-}
+};
 
 
 Ball.prototype.createMesh = function(x,y,z) {
@@ -48,9 +48,9 @@ Ball.prototype.createMesh = function(x,y,z) {
 
     return sphere;
 
-}
+};
 
 Ball.prototype.tick = function(dt) {
       this.mesh.position.copy(this.rigidBody.position);
       this.mesh.quaternion.copy(this.rigidBody.quaternion);
-}
+};

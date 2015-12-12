@@ -31,7 +31,7 @@ Ball.prototype.hitForward = function(strength){
     force.copy(this.forward.normalize());
     force.scale(strength, force);
     this.rigidBody.applyImpulse(force, ballPoint);
-}
+};
 
 WhiteBall.prototype.tick = function(dt) {
 	//TODO figure out if superclass .tick() can be called instead of the next two lines
@@ -44,7 +44,7 @@ WhiteBall.prototype.tick = function(dt) {
     this.forwardLine.position.copy(this.mesh.position);
     this.forwardLine.geometry.verticesNeedUpdate = true;
     this.forwardLine.rotation.y = angle ;
-}
+};
 
 WhiteBall.prototype.createForwardLine = function (){
     var lineGeometry = new THREE.Geometry();
@@ -59,4 +59,4 @@ WhiteBall.prototype.createForwardLine = function (){
 	line.position.copy(this.mesh.position);
 	
 	return line;
-}
+};

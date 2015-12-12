@@ -8,22 +8,21 @@ var ShortWall = function (x, y, z, width){
   });
   // How to make a mesh with a single triangle
   var vertices1 = [
-        0,    height, -2*thickness, // vertex 0
-        0,    height, 0, // vertex 1
-      -12.5,   height , -2*thickness,  // vertex 2
-        0,    -height, -2*thickness, // vertex 3
-        0,    -height, 0, // vertex 4
-      -12.5,   -height, -2*thickness  // vertex 5
-
-  ];
-    //corner of table 
-    var vertices2 = [
-        0,  height , -2*thickness, // vertex 0
-        0,  height , 0, // vertex 1
-      12.5,  height , -2*thickness,  // vertex 2
-        0,  -height, -2*thickness, // vertex 3
-        0,  -height, 0, // vertex 4
-      12.5,  -height, -2*thickness  // vertex 5
+        0,     height,  -2*thickness,   // vertex 0
+        0,     height,   0,             // vertex 1
+      -12.5,   height , -2*thickness,   // vertex 2
+        0,    -height,  -2*thickness,   // vertex 3
+        0,    -height,   0,             // vertex 4
+      -12.5,  -height,  -2*thickness    // vertex 5
+    ];
+  //corner of table 
+  var vertices2 = [
+        0,  height , -2*thickness,    // vertex 0
+        0,  height ,  0,              // vertex 1
+      12.5, height , -2*thickness,    // vertex 2
+        0,  -height, -2*thickness,    // vertex 3
+        0,  -height,  0,              // vertex 4
+      12.5, -height, -2*thickness     // vertex 5
   ];
   var indices = [
       0, 1, 2,
@@ -50,6 +49,4 @@ var ShortWall = function (x, y, z, width){
     new CANNON.Vec3(0 ,0,- thickness));
 
   this.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI/2);
-
-
 };
