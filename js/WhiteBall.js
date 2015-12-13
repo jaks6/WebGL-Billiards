@@ -7,7 +7,7 @@ var WhiteBall = function(x, y, z) {
 		this.defaultPosition.x,
 		this.defaultPosition.y,
 		this.defaultPosition.z,
-		undefined,
+		'whiteball',
 		this.color);
 
 	this.forward = new THREE.Vector3(1,0,0);
