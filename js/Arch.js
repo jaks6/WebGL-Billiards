@@ -1,7 +1,7 @@
 var Arch = function (params) {
   this.body = new CANNON.Body({
     mass: 0, // mass == 0 makes the body static
-    material: Table.wallContactMaterial
+    material: Table.floorContactMaterial
   });
 
   params = params || {};
