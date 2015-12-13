@@ -9,7 +9,7 @@ var TableLight = function (x,y,z) {
     this.spotlight.castShadow = true;
     this.spotlight.shadowCameraFov = 110;
     this.spotlight.shadowCameraNear = 100;
-    this.spotlight.shadowCameraFar = 160;
+    this.spotlight.shadowCameraFar = 170;
     this.spotlight.shadowMapWidth = 2048;
     this.spotlight.shadowMapHeight = 2048;
 
