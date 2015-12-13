@@ -16,7 +16,7 @@ var TableLight = function (x,y,z) {
     scene.add(this.spotlight);
 
     if (debug){
-        this.shadowCam  = new THREE.CameraHelper(light1.shadow.camera);
+        this.shadowCam  = new THREE.CameraHelper(this.spotlight.shadow.camera);
         scene.add(this.shadowCam);
     }
 

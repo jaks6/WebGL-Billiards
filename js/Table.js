@@ -74,24 +74,27 @@ Table.prototype.createWallBodies = function(){
 };
 
 Table.prototype.createFloor = function(){
-    var narrowStripWidth = 2.5;
-    var floorThickness = 0.1;
+    var narrowStripWidth = 2;
+    var narrowStripLength = Table.LEN_Z/2 - 5;
+    var floorThickness = 1;
     var mainAreaX = Table.LEN_X/2 - 2*narrowStripWidth;
 
     var floorBox = new CANNON.Box(new CANNON.Vec3(mainAreaX, floorThickness, Table.LEN_Z/2));
+
     var floorBoxSmall = new CANNON.Box(
-        new CANNON.Vec3(narrowStripWidth, floorThickness, Table.LEN_Z/2 - 8));
+        new CANNON.Vec3(narrowStripWidth, floorThickness, narrowStripLength));
     
     this.body = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
         material: Table.floorContactMaterial
     });
-    this.body.addShape(floorBox);
+    this.body.addShape(floorBox,
+        new CANNON.Vec3( 0, -floorThickness, 0));
     this.body.addShape(floorBoxSmall,
-        new CANNON.Vec3( -mainAreaX - narrowStripWidth, 0, 0));
+        new CANNON.Vec3( -mainAreaX - narrowStripWidth, -floorThickness, 0));
     this.body.addShape(floorBoxSmall,
-        new CANNON.Vec3( mainAreaX + narrowStripWidth, 0, 0));
+        new CANNON.Vec3( mainAreaX + narrowStripWidth, -floorThickness, 0));
 
-    if (debug) addCannonVisual(this.body);
+    if (debug) addCannonVisual(this.body, 0xff0000);
     world.add(this.body);
 };

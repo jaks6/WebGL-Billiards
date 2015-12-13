@@ -10,10 +10,10 @@ var Hole = function (x, y, z, rotation) {
   });
   // the "floor" arch
   this.arch2 = new Arch({
-    position : {x:x, y:y-3, z:z},
+    position : {x:x, y:y-1, z:z},
     no_of_boxes : 6,
-    box_height : 3,
-    box_width : 2,
+    box_height : 1,
+    box_width : 2.5,
     box_thickness : 3
   });
   this.arch1.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), Math.PI- rotation);

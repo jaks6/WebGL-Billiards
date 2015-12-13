@@ -21,21 +21,21 @@ Ball.prototype.onEnterHole = function() {
 
 Ball.prototype.createBody = function(x,y,z) {
 	var sphereBody = new CANNON.Body({
-	   mass: Ball.MASS, // kg
-	   position: new CANNON.Vec3(x,y,z), // m
-	   shape: new CANNON.Sphere(Ball.RADIUS),
-	   material: Ball.contactMaterial
+		mass: Ball.MASS, // kg
+		position: new CANNON.Vec3(x,y,z), // m
+		shape: new CANNON.Sphere(Ball.RADIUS),
+		material: Ball.contactMaterial
 	});
 	sphereBody.linearDamping = sphereBody.angularDamping = 0.5; // Hardcode
-	
+
 	return sphereBody;
 };
 
 Ball.prototype.createEnvMap = function() {
 	var urls = [
-		  'images/skybox1/px.png', //positive x
-		  'images/skybox1/nx.png', //negative x
-		  'images/skybox1/py.png', //positive y
+		  'images/skybox1/px.png', // positive x
+		  'images/skybox1/nx.png', // negative x
+		  'images/skybox1/py.png', // positive y
 		  'images/skybox1/ny.png', // negative y
 		  'images/skybox1/pz.png', // positive z
 		  'images/skybox1/nz.png'  // negative z
@@ -80,7 +80,6 @@ Ball.prototype.tick = function(dt) {
 
     //Has the ball fallen into a hole?
     if (this.rigidBody.position.y < -4 * Ball.RADIUS){
-    	console.log("In hole!");
     	this.onEnterHole();
     }
 };

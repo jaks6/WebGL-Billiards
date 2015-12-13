@@ -1,4 +1,4 @@
-var wireframeMaterial = new THREE.MeshBasicMaterial( {color : 0xffffff,wireframe: true});
+var wireframeMaterial;
 
 var createQuaternionFromAxisAngle = function(axis, angle){
 	var q = new CANNON.Quaternion();
@@ -8,7 +8,9 @@ var createQuaternionFromAxisAngle = function(axis, angle){
 /** 
 Adapted from cannon.demo.js:
 Helper to draw wireframes of collision bodies */
-var addCannonVisual = function(body){
+var addCannonVisual = function(body, _color){
+    var color = typeof _color === 'undefined'? 0xffffff : _color; //default color
+    wireframeMaterial = new THREE.MeshBasicMaterial( {color : color, wireframe: true});
     var s = 5;
     // What geometry should be used?
     var mesh;
