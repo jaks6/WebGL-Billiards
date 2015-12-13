@@ -5,7 +5,25 @@ var WIDTH   = 960,
 var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
 var debug = false; //if true then collision wireframes are drawn
 
+var progressBar;
+var loadingManager = new THREE.LoadingManager();
+
 var textureLoader = new THREE.TextureLoader();
+THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
+    progressBar.style.width = loaded / total * 100 +'%';
+    
+    if (loaded == total && total > 7){
+        //hide progress bar
+        var progBarDiv = document.getElementsByClassName("progress")[0];
+        progBarDiv.parentNode.removeChild(progBarDiv);
+
+        // attach the render-supplied DOM element
+        var canvasContainer = document.getElementById('canvas');
+        canvasContainer.appendChild(renderer.domElement);
+        draw();
+    }
+    
+};
 
 // set some camera attributes
 var VIEW_ANGLE = 45,
@@ -17,7 +35,7 @@ var VIEW_ANGLE = 45,
 var clock = new THREE.Clock();
 
 function onLoad() {
-    var canvasContainer = document.getElementById('canvas');
+    progressBar = document.getElementById('prog-bar');
     var btn_ball = document.getElementById('btn_ball');
 
     // create a WebGL renderer, camera
@@ -39,8 +57,7 @@ function onLoad() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
 
-    // attach the render-supplied DOM element
-    canvasContainer.appendChild(renderer.domElement);
+    
 
     // Setup our cannon.js world for physics
     world = createPhysicsWorld();
@@ -62,13 +79,12 @@ function onLoad() {
 
     //make the background void a grey color instead of black.
     renderer.setClearColor(0x262626, 1);
-    renderer.render(scene, camera);
 
     btn_ball.onclick = function() {
         var strength = Number(document.getElementById('range_strength').value);
         game.ballHit(strength); 
     };
-    draw();
+
 }
 function createPhysicsWorld(){
     w = new CANNON.World();

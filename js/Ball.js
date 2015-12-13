@@ -46,19 +46,6 @@ Ball.prototype.createBody = function(x,y,z) {
 	return sphereBody;
 };
 
-Ball.prototype.createEnvMap = function() {
-	var urls = [
-		  'images/skybox1/px.png', // positive x
-		  'images/skybox1/nx.png', // negative x
-		  'images/skybox1/py.png', // positive y
-		  'images/skybox1/ny.png', // negative y
-		  'images/skybox1/pz.png', // positive z
-		  'images/skybox1/nz.png'  // negative z
-		];
-	var envMap = THREE.ImageUtils.loadTextureCube(urls);
-	envMap.format = THREE.RGBFormat;
-	return envMap;
-};
 
 Ball.prototype.createMesh = function(x,y,z) {
 
