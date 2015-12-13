@@ -14,6 +14,21 @@ Ball.RADIUS = 5.715 / 2; // cm
 Ball.MASS = 0.170; // kg
 Ball.contactMaterial = new CANNON.Material("ballMaterial");
 
+/** Load env map for the ball.
+	TODO: find a nicer place to do this. */
+Ball.envMapUrls = [
+		  'images/skybox1/px.png', // positive x
+		  'images/skybox1/nx.png', // negative x
+		  'images/skybox1/py.png', // positive y
+		  'images/skybox1/ny.png', // negative y
+		  'images/skybox1/pz.png', // positive z
+		  'images/skybox1/nz.png'  // negative z
+		];
+var cubeTextureLoader = new THREE.CubeTextureLoader();
+Ball.envMap = cubeTextureLoader.load(
+	Ball.envMapUrls, function(tex) {
+		Ball.envMap = tex;
+	});
 
 Ball.prototype.onEnterHole = function() {
     world.removeBody(this.rigidBody);
@@ -52,13 +67,18 @@ Ball.prototype.createMesh = function(x,y,z) {
 		specular: 0xffffff, 
 		shininess: 140,
 		reflectivity: 0.1,
-		envMap : this.createEnvMap(),
+		envMap : Ball.envMap,
 		combine :  THREE.AddOperation,
 		shading: THREE.SmoothShading
 	} );
 	
 	if (typeof this.texture !== 'undefined'){
-		material.map = THREE.ImageUtils.loadTexture(this.texture);
+		
+		textureLoader.load(this.texture, function(tex) {
+			material.map = tex;
+			material.needsUpdate = true;
+		});
+		
 	} else {
 		material.color = new THREE.Color(this.color);
 	}

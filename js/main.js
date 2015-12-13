@@ -5,6 +5,7 @@ var WIDTH   = 960,
 var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
 var debug = false; //if true then collision wireframes are drawn
 
+var textureLoader = new THREE.TextureLoader();
 
 // set some camera attributes
 var VIEW_ANGLE = 45,
