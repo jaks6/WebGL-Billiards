@@ -8,32 +8,32 @@ function Game() {
 
 
   this.balls =
-    [new WhiteBall( -Table.LEN_X / 4, Ball.RADIUS, 0),
+    [new WhiteBall(),
 
     // First row
-    new Ball(X_offset, Ball.RADIUS, 4 * Ball.RADIUS, 'images/4ball.png'),
-    new Ball(X_offset, Ball.RADIUS, 2 * Ball.RADIUS, 'images/3ball.png'),
-    new Ball(X_offset, Ball.RADIUS, 0, 'images/14ball.png'),
-    new Ball(X_offset, Ball.RADIUS, -2 * Ball.RADIUS, 'images/2ball.png'),
-    new Ball(X_offset, Ball.RADIUS, -4 * Ball.RADIUS, 'images/15ball.png'),
+    new Ball(X_offset, Ball.RADIUS, 4 * Ball.RADIUS, '4ball'),
+    new Ball(X_offset, Ball.RADIUS, 2 * Ball.RADIUS, '3ball'),
+    new Ball(X_offset, Ball.RADIUS, 0, '14ball'),
+    new Ball(X_offset, Ball.RADIUS, -2 * Ball.RADIUS, '2ball'),
+    new Ball(X_offset, Ball.RADIUS, -4 * Ball.RADIUS, '15ball'),
 
     // 2nd row
-    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, 3 * Ball.RADIUS, 'images/13ball.png'),
-    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, Ball.RADIUS, 'images/7ball.png'),
-    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, -1 * Ball.RADIUS, 'images/12ball.png'),
-    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, -3 * Ball.RADIUS, 'images/5ball.png'),
+    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, 3 * Ball.RADIUS, '13ball'),
+    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, Ball.RADIUS, '7ball'),
+    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, -1 * Ball.RADIUS, '12ball'),
+    new Ball(X_offset - X_offset_2 * Ball.RADIUS, Ball.RADIUS, -3 * Ball.RADIUS, '5ball'),
 
     // 3rd row
-    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, 2 * Ball.RADIUS, 'images/6ball.png'),
-    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, 0, 'images/8ball.png'),
-    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, -2 * Ball.RADIUS, 'images/9ball.png'),
+    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, 2 * Ball.RADIUS, '6ball'),
+    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, 0, '8ball'),
+    new Ball(X_offset - X_offset_2 * 2 * Ball.RADIUS, Ball.RADIUS, -2 * Ball.RADIUS, '9ball'),
 
     //4th row
-    new Ball(X_offset - X_offset_2 * 3 * Ball.RADIUS, Ball.RADIUS, Ball.RADIUS, 'images/10ball.png'),
-    new Ball(X_offset - X_offset_2 * 3 * Ball.RADIUS, Ball.RADIUS, -1 * Ball.RADIUS, 'images/11ball.png'),
+    new Ball(X_offset - X_offset_2 * 3 * Ball.RADIUS, Ball.RADIUS, Ball.RADIUS, '10ball'),
+    new Ball(X_offset - X_offset_2 * 3 * Ball.RADIUS, Ball.RADIUS, -1 * Ball.RADIUS, '11ball'),
 
     //5th row
-    new Ball(X_offset - X_offset_2 * 4  * Ball.RADIUS, Ball.RADIUS, 0, 'images/1ball.png')
+    new Ball(X_offset - X_offset_2 * 4  * Ball.RADIUS, Ball.RADIUS, 0, '1ball')
 
     ];
 

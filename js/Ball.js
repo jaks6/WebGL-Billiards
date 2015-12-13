@@ -1,6 +1,6 @@
-var Ball = function(x, y, z, texture, color) {
+var Ball = function(x, y, z, name, color) {
 	this.color = typeof color === 'undefined'? 0xcc0000 : color; //default color
-	this.texture = texture;
+	this.texture = 'images/balls/' +name + '.png';
 
 	this.mesh = this.createMesh(x,y,z);
 	scene.add(this.mesh);
