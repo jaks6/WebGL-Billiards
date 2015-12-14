@@ -8,6 +8,8 @@ var Ball = function (x, y, z, name, color) {
 
   this.rigidBody = this.createBody(x,y,z);
   world.addBody(this.rigidBody);
+  this.name = name;
+  this.fallen = false;
 };
 
 Ball.RADIUS = 5.715 / 2; // cm
@@ -31,7 +33,10 @@ Ball.envMap = cubeTextureLoader.load(Ball.envMapUrls, function (tex) {
 });
 
 Ball.prototype.onEnterHole = function () {
+  this.rigidBody.velocity = new CANNON.Vec3(0);
+  this.rigidBody.angularVelocity = new CANNON.Vec3(0);
   world.removeBody(this.rigidBody);
+  eightballgame.coloredBallEnteredHole(this.name);
 };
 
 Ball.prototype.createBody = function (x,y,z) {
@@ -87,7 +92,8 @@ Ball.prototype.tick = function (dt) {
   this.mesh.quaternion.copy(this.rigidBody.quaternion);
 
   // Has the ball fallen into a hole?
-  if (this.rigidBody.position.y < -4 * Ball.RADIUS) {
+  if (this.rigidBody.position.y < -4 * Ball.RADIUS && !this.fallen) {
+    this.fallen = true;
     this.onEnterHole();
   }
 };

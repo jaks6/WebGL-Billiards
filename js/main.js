@@ -2,7 +2,7 @@ var WIDTH  = 960,
     HEIGHT = 480;
 
 // Globals
-var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
+var renderer, scene, camera, game, controls, keyboard, lightsConfig, world, gui, eightballgame;
 var debug = false; // if true then collision wireframes are drawn
 
 var progressBar;
@@ -15,8 +15,10 @@ THREE.DefaultLoadingManager.onProgress = function (item, loaded, total) {
 
   if (loaded == total && total > 7) {
     // hide progress bar
-    var progBarDiv = document.getElementsByClassName('progress')[0];
+    var progBarDiv = document.getElementById('loading');
     progBarDiv.parentNode.removeChild(progBarDiv);
+
+    gui.show(document.getElementById('mainMenu'));
 
     // attach the render-supplied DOM element
     var canvasContainer = document.getElementById('canvas');
@@ -35,8 +37,9 @@ var VIEW_ANGLE = 45,
 var clock = new THREE.Clock();
 
 function onLoad() {
+  gui = new GameGui();
+
   progressBar = document.getElementById('prog-bar');
-  var btn_ball = document.getElementById('btn_ball');
 
   // create a WebGL renderer, camera
   // and a scene
@@ -76,11 +79,6 @@ function onLoad() {
 
   // make the background void a grey color instead of black.
   renderer.setClearColor(0x262626, 1);
-
-  btn_ball.onclick = function () {
-    var strength = Number(document.getElementById('range_strength').value);
-    game.ballHit(strength);
-  };
 }
 
 function createPhysicsWorld () {
