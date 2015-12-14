@@ -6,7 +6,6 @@ var renderer, scene, camera, game, controls, keyboard, lightsConfig, world;
 var debug = false; //if true then collision wireframes are drawn
 
 var progressBar;
-var loadingManager = new THREE.LoadingManager();
 
 var textureLoader = new THREE.TextureLoader();
 THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
@@ -72,10 +71,14 @@ function onLoad() {
 
     //MOUSE controls
     controls = new THREE.OrbitControls(camera,renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.5;
+
     controls.enableZoom = true;
     controls.enablePan = true;
+    
+    controls.minDistance = 35;
+    controls.maxDistance = 165;
+    //Don't let the camera go below the ground
+    controls.maxPolarAngle = 0.49* Math.PI; 
 
     camera.position.set(-170,70,0);
 
