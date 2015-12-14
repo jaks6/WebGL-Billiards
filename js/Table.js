@@ -5,7 +5,7 @@ var Table = function() {
 
 
     var loader = new THREE.JSONLoader();
-    loader.load( 'json/tablebase.json', function ( geometry ) {
+    loader.load( 'json/table/base.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
                       color: new THREE.Color(0x000000),
                       specular: 0x404040,
@@ -22,7 +22,7 @@ var Table = function() {
         scene.add( mesh );
     });
 
-    loader.load( 'json/tablefelt.json', function ( geometry ) {
+    loader.load( 'json/table/felt.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
                       color: new THREE.Color(TABLE_COLORS.cloth),
                       specular: 0x404040,
@@ -39,7 +39,7 @@ var Table = function() {
         scene.add( mesh );
     });
 
-    loader.load( 'json/tableedges.json', function ( geometry ) {
+    loader.load( 'json/table/edges.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
                       color: new THREE.Color(0x7a5230),
                       specular: 0x404040,
@@ -56,7 +56,7 @@ var Table = function() {
         scene.add( mesh );
     });
 
-    loader.load( 'json/tablepockets.json', function ( geometry ) {
+    loader.load( 'json/table/pockets.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
                       color: new THREE.Color(0x7a5230),
                       specular: 0x3D3D3D,
@@ -73,7 +73,7 @@ var Table = function() {
         scene.add( mesh );
     });
 
-    loader.load( 'json/tablepocketbottoms.json', function ( geometry ) {
+    loader.load( 'json/table/pocket_bottoms.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
                       color: new THREE.Color(0x000),
                       specular: 0x000,
