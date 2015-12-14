@@ -3,6 +3,7 @@ var Ball = function(x, y, z, name, color) {
 	this.texture = 'images/balls/' +name + '.png';
 
 	this.mesh = this.createMesh(x,y,z);
+	this.sphere = new THREE.Sphere(this.mesh.position, Ball.RADIUS); //used for guiding line intersection detecting
 	scene.add(this.mesh);
 
 	this.rigidBody = this.createBody(x,y,z);
@@ -42,6 +43,11 @@ Ball.prototype.createBody = function(x,y,z) {
 		material: Ball.contactMaterial
 	});
 	sphereBody.linearDamping = sphereBody.angularDamping = 0.5; // Hardcode
+	sphereBody.allowSleep = true;
+
+	// Sleep parameters
+    sphereBody.sleepSpeedLimit = 0.5; // Body will feel sleepy if speed< 0.05 (speed == norm of velocity)
+    sphereBody.sleepTimeLimit = 0.1; // Body falls asleep after 1s of sleepiness
 
 	return sphereBody;
 };
