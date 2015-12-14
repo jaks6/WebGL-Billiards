@@ -10,7 +10,7 @@ var loadingManager = new THREE.LoadingManager();
 
 var textureLoader = new THREE.TextureLoader();
 THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
-    if (progressBar != undefined) {
+    if (progressBar !== undefined) {
       progressBar.style.width = (loaded / total * 100) +'%';
     }
 

@@ -59,8 +59,13 @@ WhiteBall.prototype.tick = function(dt) {
 
     //update intersection dot if were not moving
     if( this.rigidBody.sleepState == CANNON.Body.SLEEPING ){
+    	if (!this.forwardLine.visible) this.forwardLine.visible = true;
+    	if (!this.dot.visible) this.dot.visible = true;
     	this.updateGuideLine();
     	this.updateIntersectionDot();
+    } else {
+    	if (this.forwardLine.visible) this.forwardLine.visible = false;
+    	if (this.dot.visible) this.dot.visible = false;
     }
     
     
@@ -85,7 +90,6 @@ WhiteBall.prototype.updateGuideLine = function(){
     this.forwardLine.rotation.y = angle;
     this.forward.normalize();
     
-
     //Go through each ball
     var distances = [];
     for (var i = 1; i < game.balls.length; i++) {
