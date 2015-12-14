@@ -93,6 +93,9 @@ function createPhysicsWorld(){
     w.solver.iterations = 10;
     w.solver.tolerance = 0;   // Force solver to use all iterations
 
+    // Allow sleeping
+    w.allowSleep = true;
+
     w.fixedTimeStep = 1.0 / 60.0; // seconds
 
     return w;

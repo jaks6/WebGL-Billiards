@@ -12,7 +12,6 @@ var WhiteBall = function(x, y, z) {
 
 	this.forward = new THREE.Vector3(1,0,0);
 	this.forwardLine = this.createForwardLine();
-
 	scene.add(this.forwardLine);
 
 	this.dot = this.createIntersectionDot();
@@ -28,6 +27,7 @@ WhiteBall.prototype.constructor = WhiteBall;
     The force is the balls "forward" vector, applied at the
     edge of the ball in the opposite direction of the "forward"*/
 WhiteBall.prototype.hitForward = function(strength){
+	this.rigidBody.wakeUp();
 	var ballPoint = new CANNON.Vec3();
 	ballPoint.copy(this.rigidBody.position);
 
@@ -55,10 +55,11 @@ WhiteBall.prototype.tick = function(dt) {
 	//Superclass tick behaviour:
     Ball.prototype.tick.apply(this, arguments);
 
-    this.updateGuideLine();
+    
 
     //update intersection dot if were not moving
-    if(this.rigidBody.velocity.lengthSquared() < 0.05){
+    if( this.rigidBody.sleepState == CANNON.Body.SLEEPING ){
+    	this.updateGuideLine();
     	this.updateIntersectionDot();
     }
     
@@ -83,13 +84,44 @@ WhiteBall.prototype.updateGuideLine = function(){
     
     this.forwardLine.rotation.y = angle;
     this.forward.normalize();
-    //See where the guideline intersects with its bounding box
+    
+
+    //Go through each ball
+    var distances = [];
+    for (var i = 1; i < game.balls.length; i++) {
+    	//find the distance to that ball
+    	distances.push({
+    		index : i,
+    		dist : Math.abs(this.mesh.position.distanceTo(game.balls[i].mesh.position))
+    	});
+    }
+    //sort the according to distance
+    distances.sort(function(a, b){ return a.dist - b.dist; });
+    //iterate again, to find the closest intersecting ball
+    var intersectingBallIndex = -1;
+    for (var j = 0; j < distances.length; j++) {
+    	var ballIndex = distances[j].index;
+    	var curBall = game.balls[ballIndex];
+    	if (this.forwardLine.ray.isIntersectionSphere(curBall.sphere)) {
+    		intersectingBallIndex = ballIndex;
+    		break;
+    	}
+    }
     //This could possibly be optimized with some more clever usage of THREE js-s offered functions (look into Ray, etc)
-	this.intersectionPoint = this.forwardLine.ray.intersectBox(this.forwardLine.box);
-	var distance = Math.sqrt(this.mesh.position.distanceToSquared(this.intersectionPoint));
-	
-    this.forwardLine.geometry.vertices[1].x = distance;
+    if (intersectingBallIndex != -1){
+    	//We are aiming at some ball
+    	this.intersectionPoint = this.forwardLine.ray.intersectSphere(
+    		game.balls[intersectingBallIndex].sphere);
+    } else {
+    	//Otherwise were intersecting with the edge of the table
+		this.intersectionPoint = this.forwardLine.ray.intersectBox(this.forwardLine.box);
+    }
+
+    var distance = Math.sqrt(this.mesh.position.distanceToSquared(this.intersectionPoint));
+		
+	this.forwardLine.geometry.vertices[1].x = distance;
     this.forwardLine.geometry.verticesNeedUpdate = true;
+    
 
 };
 
@@ -103,7 +135,7 @@ WhiteBall.prototype.createForwardLine = function (){
 	lineGeometry.computeLineDistances();
 	var lineMaterial = new THREE.LineDashedMaterial( { color: 0xdddddd, dashSize: 4, gapSize: 2 } );
 	var line = new THREE.Line( lineGeometry, lineMaterial );
-
+	line.position.copy(new THREE.Vector3(100,100,100)); //hide it somewhere initially
 	line.box = new THREE.Box3(
 		new THREE.Vector3(-Table.LEN_X/2, 0, -Table.LEN_Z/2),
 		new THREE.Vector3(Table.LEN_X/2, 2*Ball.RADIUS, Table.LEN_Z/2)
