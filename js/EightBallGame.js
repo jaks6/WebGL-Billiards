@@ -62,13 +62,13 @@ EightBallGame.prototype.coloredBallEnteredHole = function (name) {
     if (eightballgame.sides.player1 == '?' || eightballgame.sides.player2 == '?') {
       eightballgame.sides[eightballgame.turn] = ballno < 8 ? 'solid' : 'striped';
       eightballgame.sides[eightballgame.turn == 'player1' ? 'player2' : 'player1'] = ballno > 8 ? 'solid' : 'striped';
-      pocketingOccurred = true;
+      eightballgame.pocketingOccurred = true;
     } else {
       if ((eightballgame.sides[eightballgame.turn] == 'solid' && ballno < 8) || (eightballgame.sides[eightballgame.turn] == 'striped' && ballno > 8)) {
         // another turn
-        pocketingOccurred = true;
+        eightballgame.pocketingOccurred = true;
       } else {
-        pocketingOccurred = false;
+        eightballgame.pocketingOccurred = false;
         gui.log(eightballgame.turn + " pocketed opponent's ball!");
       }
     }
