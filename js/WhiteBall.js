@@ -15,6 +15,9 @@ var WhiteBall = function(x, y, z) {
 
 	scene.add(this.forwardLine);
 
+	this.dot = this.createIntersectionDot();
+	scene.add(this.dot);
+
 };
 
 WhiteBall.prototype = Object.create(Ball.prototype);
@@ -52,12 +55,42 @@ WhiteBall.prototype.tick = function(dt) {
 	//Superclass tick behaviour:
     Ball.prototype.tick.apply(this, arguments);
 
-    var angle = controls.getAzimuthalAngle() + Math.PI / 2;
-    this.forward.set(Math.cos(angle), 0, -Math.sin(angle));
+    this.updateGuideLine();
 
+    //update intersection dot if were not moving
+    if(this.rigidBody.velocity.lengthSquared() < 0.05){
+    	this.updateIntersectionDot();
+    }
+    
+    
+};
+
+WhiteBall.prototype.createIntersectionDot = function() {
+	var geometry = new THREE.SphereGeometry( 1, 4, 4 );
+	var material = new THREE.MeshBasicMaterial( { opacity: 0.5, transparent:true, color: 0xffff00} );
+	var sphere = new THREE.Mesh( geometry, material );
+	return sphere;
+};
+WhiteBall.prototype.updateIntersectionDot = function(){
+	this.dot.position.copy(this.intersectionPoint);
+	};
+
+WhiteBall.prototype.updateGuideLine = function(){
+	var angle = controls.getAzimuthalAngle() + Math.PI / 2;
+    this.forward.set(Math.cos(angle), 0, -Math.sin(angle));
+    
     this.forwardLine.position.copy(this.mesh.position);
+    
+    this.forwardLine.rotation.y = angle;
+    this.forward.normalize();
+    //See where the guideline intersects with its bounding box
+    //This could possibly be optimized with some more clever usage of THREE js-s offered functions (look into Ray, etc)
+	this.intersectionPoint = this.forwardLine.ray.intersectBox(this.forwardLine.box);
+	var distance = Math.sqrt(this.mesh.position.distanceToSquared(this.intersectionPoint));
+	
+    this.forwardLine.geometry.vertices[1].x = distance;
     this.forwardLine.geometry.verticesNeedUpdate = true;
-    this.forwardLine.rotation.y = angle ;
+
 };
 
 WhiteBall.prototype.createForwardLine = function (){
@@ -70,7 +103,17 @@ WhiteBall.prototype.createForwardLine = function (){
 	lineGeometry.computeLineDistances();
 	var lineMaterial = new THREE.LineDashedMaterial( { color: 0xdddddd, dashSize: 4, gapSize: 2 } );
 	var line = new THREE.Line( lineGeometry, lineMaterial );
-	line.position.copy(this.mesh.position);
+
+	line.box = new THREE.Box3(
+		new THREE.Vector3(-Table.LEN_X/2, 0, -Table.LEN_Z/2),
+		new THREE.Vector3(Table.LEN_X/2, 2*Ball.RADIUS, Table.LEN_Z/2)
+		);
+
+	line.ray = new THREE.Ray(
+		this.mesh.position,
+		this.forward
+		);
+
 	
 	return line;
 };
