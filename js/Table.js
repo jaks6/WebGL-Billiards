@@ -1,4 +1,9 @@
 var Table = function() {
+    var mesh_x = -Table.LEN_X/2;
+    var mesh_y = 0;
+    var mesh_z = Table.LEN_Z/2;
+
+
     var loader = new THREE.JSONLoader();
     loader.load( 'json/tablebase.json', function ( geometry ) {
       var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
@@ -8,9 +13,9 @@ var Table = function() {
                       shading: THREE.SmoothShading
         }));
 
-        mesh.position.x = -137;
-        mesh.position.y = 0;
-        mesh.position.z = 63.25;
+        mesh.position.x = mesh_x;
+        mesh.position.y = mesh_y;
+        mesh.position.z = mesh_z;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -25,9 +30,9 @@ var Table = function() {
                       shading: THREE.SmoothShading
         }));
 
-        mesh.position.x = -137;
-        mesh.position.y = 0;
-        mesh.position.z = 63.25;
+        mesh.position.x = mesh_x;
+        mesh.position.y = mesh_y;
+        mesh.position.z = mesh_z;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -42,9 +47,9 @@ var Table = function() {
                       shading: THREE.SmoothShading
         }));
 
-        mesh.position.x = -137;
-        mesh.position.y = 0;
-        mesh.position.z = 63.25;
+        mesh.position.x = mesh_x;
+        mesh.position.y = mesh_y;
+        mesh.position.z = mesh_z;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -59,9 +64,9 @@ var Table = function() {
                       shading: THREE.SmoothShading
         }));
 
-        mesh.position.x = -137;
-        mesh.position.y = 0;
-        mesh.position.z = 63.25;
+        mesh.position.x = mesh_x;
+        mesh.position.y = mesh_y;
+        mesh.position.z = mesh_z;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -76,9 +81,9 @@ var Table = function() {
                       shading: THREE.SmoothShading
         }));
 
-        mesh.position.x = -137;
-        mesh.position.y = 0;
-        mesh.position.z = 63.25;
+        mesh.position.x = mesh_x;
+        mesh.position.y = mesh_y;
+        mesh.position.z = mesh_z;
         mesh.scale.set( 100, 100, 100 );
         mesh.receiveShadow = true;
         mesh.castShadow = true;
@@ -105,8 +110,8 @@ var TABLE_COLORS = {
     cloth : "#4d9900"
 };
 
-Table.LEN_Z = 116;
-Table.LEN_X = 264;
+Table.LEN_Z = 137.16;
+Table.LEN_X = 274.32;
 Table.WALL_HEIGHT = 6;
 Table.floorContactMaterial = new CANNON.Material("floorMaterial");
 Table.wallContactMaterial = new CANNON.Material("wallMaterial");
@@ -116,21 +121,21 @@ Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 This method is 3am spaghetti, you've been warned..*/
 Table.prototype.createWallBodies = function(){
     //walls of -z
-    var wall1 = new LongWall( 264/4 - 0.8, 2, -Table.LEN_Z/2, 59);
-    var wall2 = new LongWall(-264/4 + 0.8, 2, -Table.LEN_Z/2, 59);
+    var wall1 = new LongWall( Table.LEN_X/4 - 0.8, 2, -Table.LEN_Z/2, 59);
+    var wall2 = new LongWall(-Table.LEN_X/4 + 0.8, 2, -Table.LEN_Z/2, 59);
     wall2.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI);
 
     //walls of -z
-    var wall3 = new LongWall( 264/4 - 0.8,  2, Table.LEN_Z/2, 59);
-    var wall4 = new LongWall(-264/4 + 0.8, 2, Table.LEN_Z/2, 59);
+    var wall3 = new LongWall( Table.LEN_X/4 - 0.8,  2, Table.LEN_Z/2, 59);
+    var wall4 = new LongWall(-Table.LEN_X/4 + 0.8, 2, Table.LEN_Z/2, 59);
     wall3.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI);
     wall4.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI);
 
     //wall of +x
-    var wall5 = new ShortWall(264/2,  2, 0, 50);
+    var wall5 = new ShortWall(Table.LEN_X/2,  2, 0, 50);
 
     //wall of -x
-    var wall6 = new ShortWall(-264/2,  2, 0, 50);
+    var wall6 = new ShortWall(-Table.LEN_X/2,  2, 0, 50);
     wall6.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -1.5*Math.PI);
 
     var walls = [ wall1,wall2,wall3,wall4,wall5,wall6 ];
