@@ -1,7 +1,7 @@
 /** This is the wall segment  that is parallel to the x-axis */
 var LongWall = function (x, y, z, width){
   var height = 2;
-  var thickness = 4;
+  var thickness = 2.5;
   
   this.body = new CANNON.Body({
     mass: 0, // mass == 0 makes the body static
@@ -12,19 +12,19 @@ var LongWall = function (x, y, z, width){
   var vertices1 = [
       0,    height, -2*thickness, // vertex 0
       0,    height,  0,           // vertex 1
-    -1.2,   height, -2*thickness, // vertex 2
+    -2.8,   height, -2*thickness, // vertex 2
       0,   -height, -2*thickness, // vertex 3
       0,   -height,  0,           // vertex 4
-    -1.2,  -height, -2*thickness  // vertex 5
+    -2.8,  -height, -2*thickness  // vertex 5
     ];
   //corner of table 
   var vertices2 = [
       0,   height , -2*thickness,  // vertex 0
       0,   height ,  0,             // vertex 1
-    12.5,  height , -2*thickness, // vertex 2
+    8,  height , -2*thickness, // vertex 2
       0,  -height,  -2*thickness,  // vertex 3
       0,  -height,   0,              // vertex 4
-    12.5, -height,  -2*thickness  // vertex 5
+    8, -height,  -2*thickness  // vertex 5
     ];
 
   var indices = [

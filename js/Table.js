@@ -92,15 +92,15 @@ var Table = function() {
 
     this.rigidBody = this.createFloor(); //floor
 
-    //corners of -z table side
-    this.hole1 = new Hole( Table.LEN_X/2 + 2, 0, -Table.LEN_Z/2 -2,  Math.PI/4);
-    this.hole2 = new Hole(-Table.LEN_X/2 - 2, 0, -Table.LEN_Z/2 -2, -Math.PI/4);
+    //corners of -x table side
+    this.hole1 = new Hole( Table.LEN_X/2 + 1.5, 0, -Table.LEN_Z/2 - 1.5,  Math.PI/4);
+    this.hole2 = new Hole(-Table.LEN_X/2 - 1.5, 0, -Table.LEN_Z/2 - 1.5, -Math.PI/4);
     //middle holes
     this.hole3 = new Hole(0, 0, -Table.LEN_Z/2 - 4.8, 0);
     this.hole4 = new Hole(0, 0,  Table.LEN_Z/2 + 4.8, Math.PI);
-    //corners of +z table side
-    this.hole5 = new Hole( Table.LEN_X/2 + 2, 0, Table.LEN_Z/2 +2,  3 * Math.PI/4);
-    this.hole6 = new Hole(-Table.LEN_X/2 - 2, 0, Table.LEN_Z/2 +2, -3 * Math.PI/4);
+    //corners of +x table side
+    this.hole5 = new Hole( Table.LEN_X/2 + 1.5, 0, Table.LEN_Z/2 + 1.5,  3 * Math.PI/4);
+    this.hole6 = new Hole(-Table.LEN_X/2 - 1.5, 0, Table.LEN_Z/2 + 1.5, -3 * Math.PI/4);
 
 
     this.walls = this.createWallBodies();
@@ -121,21 +121,21 @@ Table.wallContactMaterial = new CANNON.Material("wallMaterial");
 This method is 3am spaghetti, you've been warned..*/
 Table.prototype.createWallBodies = function(){
     //walls of -z
-    var wall1 = new LongWall( Table.LEN_X/4 - 0.8, 2, -Table.LEN_Z/2, 59);
-    var wall2 = new LongWall(-Table.LEN_X/4 + 0.8, 2, -Table.LEN_Z/2, 59);
+    var wall1 = new LongWall( Table.LEN_X/4 - 0.8, 2, -Table.LEN_Z/2, 61);
+    var wall2 = new LongWall(-Table.LEN_X/4 + 0.8, 2, -Table.LEN_Z/2, 61);
     wall2.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI);
 
     //walls of -z
-    var wall3 = new LongWall( Table.LEN_X/4 - 0.8,  2, Table.LEN_Z/2, 59);
-    var wall4 = new LongWall(-Table.LEN_X/4 + 0.8, 2, Table.LEN_Z/2, 59);
+    var wall3 = new LongWall( Table.LEN_X/4 - 0.8,  2, Table.LEN_Z/2, 61);
+    var wall4 = new LongWall(-Table.LEN_X/4 + 0.8, 2, Table.LEN_Z/2, 61);
     wall3.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI);
     wall4.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -Math.PI);
 
     //wall of +x
-    var wall5 = new ShortWall(Table.LEN_X/2,  2, 0, 50);
+    var wall5 = new ShortWall(Table.LEN_X/2,  2, 0, 60.5);
 
     //wall of -x
-    var wall6 = new ShortWall(-Table.LEN_X/2,  2, 0, 50);
+    var wall6 = new ShortWall(-Table.LEN_X/2,  2, 0, 60.5);
     wall6.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), -1.5*Math.PI);
 
     var walls = [ wall1,wall2,wall3,wall4,wall5,wall6 ];
