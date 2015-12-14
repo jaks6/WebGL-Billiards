@@ -1,12 +1,80 @@
 var Table = function() {
     var loader = new THREE.JSONLoader();
-    loader.load( 'json/table.json', function ( geometry ) {
-    var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
-                    color: new THREE.Color(TABLE_COLORS.cloth),
-                    specular: 0x404040,
-                    shininess: 20,
-                    shading: THREE.SmoothShading
-            }));
+    loader.load( 'json/tablebase.json', function ( geometry ) {
+      var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                      color: new THREE.Color(0x000000),
+                      specular: 0x404040,
+                      shininess: 20,
+                      shading: THREE.SmoothShading
+        }));
+
+        mesh.position.x = -137;
+        mesh.position.y = 0;
+        mesh.position.z = 63.25;
+        mesh.scale.set( 100, 100, 100 );
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
+        scene.add( mesh );
+    });
+
+    loader.load( 'json/tablefelt.json', function ( geometry ) {
+      var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                      color: new THREE.Color(TABLE_COLORS.cloth),
+                      specular: 0x404040,
+                      shininess: 20,
+                      shading: THREE.SmoothShading
+        }));
+
+        mesh.position.x = -137;
+        mesh.position.y = 0;
+        mesh.position.z = 63.25;
+        mesh.scale.set( 100, 100, 100 );
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
+        scene.add( mesh );
+    });
+
+    loader.load( 'json/tableedges.json', function ( geometry ) {
+      var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                      color: new THREE.Color(0x7a5230),
+                      specular: 0x404040,
+                      shininess: 20,
+                      shading: THREE.SmoothShading
+        }));
+
+        mesh.position.x = -137;
+        mesh.position.y = 0;
+        mesh.position.z = 63.25;
+        mesh.scale.set( 100, 100, 100 );
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
+        scene.add( mesh );
+    });
+
+    loader.load( 'json/tablepockets.json', function ( geometry ) {
+      var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                      color: new THREE.Color(0x7a5230),
+                      specular: 0x3D3D3D,
+                      shininess: 20,
+                      shading: THREE.SmoothShading
+        }));
+
+        mesh.position.x = -137;
+        mesh.position.y = 0;
+        mesh.position.z = 63.25;
+        mesh.scale.set( 100, 100, 100 );
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
+        scene.add( mesh );
+    });
+
+    loader.load( 'json/tablepocketbottoms.json', function ( geometry ) {
+      var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {
+                      color: new THREE.Color(0x000),
+                      specular: 0x000,
+                      shininess: 0,
+                      shading: THREE.SmoothShading
+        }));
 
         mesh.position.x = -137;
         mesh.position.y = 0;
@@ -83,7 +151,7 @@ Table.prototype.createFloor = function(){
 
     var floorBoxSmall = new CANNON.Box(
         new CANNON.Vec3(narrowStripWidth, floorThickness, narrowStripLength));
-    
+
     this.body = new CANNON.Body({
         mass: 0, // mass == 0 makes the body static
         material: Table.floorContactMaterial
