@@ -1,57 +1,55 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>Billiard</title>
+  <head>
+    <title>Billiard</title>
 
-		<link rel="stylesheet" href="styles.css">
-		<!-- BootStrap -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-		<!-- external js libs -->
-		<script type="text/javascript" src="lib/three.js/build/three.min.js"></script>
-		<script type="text/javascript" src="lib/cannon.min.js"></script>
-		<script type="text/javascript" src="lib/OrbitControls.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <!-- external js libs -->
+    <script type="text/javascript" src="lib/three.js/build/three.min.js"></script>
+    <script type="text/javascript" src="lib/cannon.min.js"></script>
+    <script type="text/javascript" src="lib/OrbitControls.js"></script>
 
-		<script type="text/javascript" src="js/CannonUtils.js"></script>
+    <script type="text/javascript" src="js/CannonUtils.js"></script>
 
-		<script type="text/javascript" src="js/Arch.js"></script>
-		<script type="text/javascript" src="js/Hole.js"></script>
-		<script type="text/javascript" src="js/LongWall.js"></script>
-		<script type="text/javascript" src="js/ShortWall.js"></script>
-		<script type="text/javascript" src="js/Table.js"></script>
-		<script type="text/javascript" src="js/Ball.js"></script>
-		<script type="text/javascript" src="js/WhiteBall.js"></script>
-		<script type="text/javascript" src="js/TableLight.js"></script>
-		<script type="text/javascript" src="js/Game.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
-		
-	</head>
+    <script type="text/javascript" src="js/Arch.js"></script>
+    <script type="text/javascript" src="js/Hole.js"></script>
+    <script type="text/javascript" src="js/LongWall.js"></script>
+    <script type="text/javascript" src="js/ShortWall.js"></script>
+    <script type="text/javascript" src="js/Table.js"></script>
+    <script type="text/javascript" src="js/Ball.js"></script>
+    <script type="text/javascript" src="js/WhiteBall.js"></script>
+    <script type="text/javascript" src="js/TableLight.js"></script>
+    <script type="text/javascript" src="js/Game.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </head>
 
-	<body onload="onLoad()">
-		<div class="progress">
-			<div id="prog-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
-				aria-valuemin="0" aria-valuemax="100" style="width:1%">
-		    <span class="sr-only">Loading...</span>
-			</div>
-		</div>
-		<div id="canvas"></div>
-		<div class="container">
-			<div class="row control-button">
-				<div class="col-md-2 col-md-offset-2 text-right"><h5>Shot strength:</h5></div>
-				<div class="col-md-2 ">
-					<form>
-						<input id="range_strength" type="range" name="strength" min="10" max="100">
-					</form>
-				</div>
-				<div class="col-md-4 text-center">
-					<button id="btn_ball" type="button" class="btn btn-success">Hit</button>
-				</div>
-			</div>
-		</div>
+  <body onload="onLoad()">
+    <div class="progress">
+      <div id="prog-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
+        aria-valuemin="0" aria-valuemax="100" style="width:1%">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div id="canvas"></div>
+    <div class="container">
+      <div class="row control-button">
+        <div class="col-md-2 col-md-offset-2 text-right"><h5>Shot strength:</h5></div>
+        <div class="col-md-2 ">
+          <form>
+            <input id="range_strength" type="range" name="strength" min="10" max="100">
+          </form>
+        </div>
+        <div class="col-md-4 text-center">
+          <button id="btn_ball" type="button" class="btn btn-success">Hit</button>
+        </div>
+      </div>
+    </div>
 
-		<div class="jumbotron guide">
-		    <p>Use the mouse to look around, click on the button to make the white ball move.</p>
-		</div>
-		<div id="status"></div>
-		
+    <div class="jumbotron guide">
+      <p>Use the mouse to look around, click on the button to make the white ball move.</p>
+    </div>
+    <div id="status"></div>
 	</body>
 </html>

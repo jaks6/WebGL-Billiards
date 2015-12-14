@@ -1,27 +1,25 @@
-#canvas
-{
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    width: 960px;
+#canvas {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 960px;
 }
 
-
 .control-button {
-	margin: 1% auto;
+  margin: 1% auto;
 }
 
 #range_strength {
-	margin-top: 5pt;
+  margin-top: 5pt;
 }
 
 .guide {
-	text-align: center;
+  text-align: center;
 }
 
 .center {
-    margin: 0 auto;
-    width: 80%;
+  margin: 0 auto;
+  width: 80%;
 }
