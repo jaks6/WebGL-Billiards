@@ -10,8 +10,10 @@ var loadingManager = new THREE.LoadingManager();
 
 var textureLoader = new THREE.TextureLoader();
 THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
-    progressBar.style.width = loaded / total * 100 +'%';
-    
+    if (progressBar != undefined) {
+      progressBar.style.width = (loaded / total * 100) +'%';
+    }
+
     if (loaded == total && total > 7){
         //hide progress bar
         var progBarDiv = document.getElementsByClassName("progress")[0];
@@ -22,7 +24,7 @@ THREE.DefaultLoadingManager.onProgress = function ( item, loaded, total ) {
         canvasContainer.appendChild(renderer.domElement);
         draw();
     }
-    
+
 };
 
 // set some camera attributes
@@ -57,7 +59,7 @@ function onLoad() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
 
-    
+
 
     // Setup our cannon.js world for physics
     world = createPhysicsWorld();
@@ -82,7 +84,7 @@ function onLoad() {
 
     btn_ball.onclick = function() {
         var strength = Number(document.getElementById('range_strength').value);
-        game.ballHit(strength); 
+        game.ballHit(strength);
     };
 
 }
@@ -150,6 +152,5 @@ function addLights() {
     scene.add( light );
     var tableLight1 = new TableLight(Table.LEN_X / 4, 150, 0);
     var tableLight2 = new TableLight(-Table.LEN_X / 4, 150, 0);
-  
-}
 
+}
