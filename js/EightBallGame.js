@@ -48,12 +48,8 @@ EightBallGame.prototype.coloredBallEnteredHole = function (name) {
     return;
   }
 
-  if (ballno == 8 && numbered_balls_on_table > 1) {
-
-    // Game over
-    eightballgame.endGame();
-  } else if (ballno == 8) {
-    if (numbered_balls_on_table > 1) {
+  if (ballno == 8) {
+    if (eightballgame.numbered_balls_on_table.length > 1) {
       gui.log("Game over! 8 ball pocketed too early by " + this.turn);
       eightballgame.turn = eightballgame.turn == 'player1' ? 'player2': 'player1';
     }
@@ -83,6 +79,8 @@ EightBallGame.prototype.tickTimer = function () {
   gui.UpdateTimer(eightballgame.timer);
   if (eightballgame.timer == 0) {
     gui.log(eightballgame.turn + " ran out of time");
+    eightballgame.state = "outoftime";
+    eightballgame.switchSides();
   } else {
     eightballgame.timer--;
     eightballgame.ticker = setTimeout(eightballgame.tickTimer, 1000);
