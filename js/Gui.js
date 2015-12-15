@@ -3,7 +3,8 @@ var GameGui = function () {
   btn_ball.onclick = function () {
     eightballgame.hitButtonClicked(Number(document.getElementById('range_strength').value));
   };
-}
+  if (debug) document.getElementById('fps_stats_container').appendChild( stats.domElement );
+};
 
 GameGui.prototype.setupGameHud = function() {
   this.hide(document.getElementById('mainMenu'));

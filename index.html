@@ -11,6 +11,7 @@
     <!-- external js libs -->
     <script type="text/javascript" src="lib/three.js/build/three.min.js"></script>
     <script type="text/javascript" src="lib/cannon.min.js"></script>
+    <script type="text/javascript" src="lib/stats.min.js"></script>
     <script type="text/javascript" src="lib/OrbitControls.js"></script>
 
     <script type="text/javascript" src="js/CannonUtils.js"></script>
@@ -50,7 +51,7 @@
       </div>
 
       <div id="controlsHud" class="hide">
-        <div class="player player1">
+        <div class="player player1 unknown">
           <h5>Player 1 (<span></span>)</h5>
 
           <ul>
@@ -64,7 +65,7 @@
           </ul>
         </div>
 
-        <div class="player player2">
+        <div class="player player2 unknown">
           <h5>Player 2 (<span></span>)</h5>
 
           <ul>
@@ -96,6 +97,7 @@
         <div class="timer">
           30
         </div>
+        <div id="fps_stats_container"></div>
       </div>
 
       <div id="gameover" class="hide">

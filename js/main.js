@@ -7,6 +7,9 @@ var debug = false; // if true then collision wireframes are drawn
 
 var progressBar;
 
+var stats = new Stats();
+stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
+
 var textureLoader = new THREE.TextureLoader();
 THREE.DefaultLoadingManager.onProgress = function (item, loaded, total) {
   if (typeof progressBar !== 'undefined') {
@@ -123,8 +126,8 @@ function setCollisionBehaviour() {
 }
 
 function draw() {
-  requestAnimationFrame(draw);
-
+  stats.begin();
+  
   // Controls
   controls.target.copy(game.balls[0].mesh.position);
   controls.update();
@@ -136,6 +139,8 @@ function draw() {
   var dt = clock.getDelta();
   game.tick(dt);
 
+  stats.end();
+  requestAnimationFrame(draw);
   renderer.render(scene, camera); // We render our scene with our camera
 }
 
