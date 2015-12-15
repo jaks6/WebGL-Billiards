@@ -265,3 +265,11 @@
 .player.unknown span:before {
   content: '?';
 }
+
+
+#stats {
+    position: absolute;
+    top: 420px;
+    left: 810px;
+    z-index: 1;
+}

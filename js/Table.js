@@ -25,7 +25,7 @@ var Table = function () {
     var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
       color: new THREE.Color(TABLE_COLORS.cloth),
       specular: 0x404040,
-      shininess: 20,
+      shininess: 10,
       shading: THREE.SmoothShading
     }));
 
@@ -42,7 +42,7 @@ var Table = function () {
     var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({
       color: new THREE.Color(0x7a5230),
       specular: 0x404040,
-      shininess: 20,
+      shininess: 100,
       shading: THREE.SmoothShading
     }));
 
