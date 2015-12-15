@@ -122,7 +122,7 @@
   width: 20px;
   height: 20px;
   text-align: center;
-  background-color: #d3d3d3;
+  display: block;
   border-radius: 20px;
 }
 
@@ -264,4 +264,35 @@
 }
 .player.unknown span:before {
   content: '?';
+}
+
+.player ul li {
+  font-size: 10px;
+  line-height: 19px;
+  text-align: center;
+}
+
+.player ul li::after {
+  display: block;
+  background-color: white;
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  margin-top: -15px;
+  content: '';
+  margin-left: 4px;
+  z-index: 10;
+}
+
+.player ul li::before {
+  background-image: linear-gradient(#fff 13%, transparent 13%, transparent 87%, #fff 13%);
+  display: block;
+  background-color: red;
+  border: 1px solid #000;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  margin-top: 0;
+  content: '';
+  margin-bottom: -20px;
 }
